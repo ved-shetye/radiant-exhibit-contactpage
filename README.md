@@ -1,46 +1,43 @@
-# Astro Starter Kit: Basics
+# radiant-exhibit-contactpage
 
-```sh
-npm create astro@latest -- --template basics
-```
+Contact Us page for Radiant Exhibits built with Astro, Tailwind CSS, Web3Forms inquiry integration, and Calendly consultation scheduling.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 🚀 Features
 
-## 🚀 Project Structure
+- **Hero Banner:** "Contact Us" title with responsive typography and slow-zoom background.
+- **Contact Details:** Showroom address (150 Milner Ave, Unit #19, Toronto), local line, toll-free number, and direct sales email.
+- **Interactive Google Maps Embed:** Location embed with 1-click directions.
+- **Web3Forms Inquiry Form:** "Send Us an Inquiry" form with name, company, email, phone, reason for inquiry dropdown, notes, anti-spam honeypot, and URL parameter tracking.
+- **Book a Free Consultation:** Calendly inline appointment booking widget with video consultation info.
 
-Inside of your Astro project, you'll see the following folders and files:
+## 📁 Project Structure
 
 ```text
 /
 ├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
+├── src/
+│   ├── assets/
+│   ├── components/
+│   │   ├── Banner.astro              # Contact Us Hero Banner
+│   │   ├── ContactSection.astro      # Address, Phones, Map Embed & Inquiry Form
+│   │   ├── ConsultationSection.astro # Book a Free Consultation & Calendly Embed
+│   │   ├── Navbar.astro              # Navigation bar with dropdowns & top bar
+│   │   └── Footer.astro              # Radiant Exhibits footer
+│   ├── layouts/
+│   │   └── Layout.astro              # Base layout with ChatBot & Floating Call button
+│   ├── pages/
+│   │   ├── index.astro               # Contact Us page
+│   │   └── thankyou.astro            # Post-submission thank you page
+│   └── styles/
+│       └── global.css                # Tailwind CSS v4 setup & animations
 └── package.json
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
 ## 🧞 Commands
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+| Command | Action |
+| :--- | :--- |
+| `npm install` | Installs dependencies |
+| `npm run dev` | Starts local dev server at `localhost:4321` |
+| `npm run build` | Builds the production site to `./dist/` |
+| `npm run preview` | Previews the build locally |

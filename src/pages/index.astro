@@ -1,0 +1,23 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Banner from '../components/Banner.astro';
+import ContactSection from '../components/ContactSection.astro';
+import ConsultationSection from '../components/ConsultationSection.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="Contact Us | Radiant Exhibits - Toronto Trade Show Booth Specialists">
+	<Navbar />
+	<main>
+		<!-- 1. Hero Banner: Contact Us -->
+		<Banner />
+
+		<!-- 2. Contact Details & Inquiry Form Flow (Address, Phones, Email, Map Embed, Send Us an Inquiry Form) -->
+		<ContactSection />
+
+		<!-- 3. Book a Free Consultation Section (Calendly Embed) -->
+		<ConsultationSection />
+	</main>
+	<Footer />
+</Layout>

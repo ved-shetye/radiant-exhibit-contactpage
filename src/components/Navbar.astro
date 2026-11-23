@@ -1,0 +1,527 @@
+---
+import TopBar from "./TopBar.astro";
+import { Image } from "astro:assets";
+import logoImg from "../assets/logo.png";
+
+const navItems = [
+  {
+    name: "Home",
+    href: "https://radiantexhibits.com",
+  },
+  {
+    name: "Products",
+    href: "#solutions",
+    children: [
+      {
+        name: "Custom",
+        href: "https://radiantexhibits.com/customized-solutions/",
+        grandChildren: [
+          {
+            name: "Graphic-Oriented Custom Booth",
+            href: "https://radiantexhibits.com/customized-solutions/",
+          },
+          {
+            name: "Product-Oriented Custom Booth",
+            href: "https://radiantexhibits.com/customized-solutions/",
+          },
+        ],
+      },
+      {
+        name: "Modular",
+        href: "https://radiantexhibits.com/category/modular-displays",
+        grandChildren: [
+          {
+            name: "Hybrid Systems",
+            href: "https://radiantexhibits.com/category/modular-displays/hybrid-systems",
+          },
+          {
+            name: "Truss Displays",
+            href: "https://radiantexhibits.com/category/modular-displays/truss-displays",
+          },
+          {
+            name: "Vector Frames",
+            href: "https://radiantexhibits.com/category/modular-displays/vector-frames",
+          },
+          {
+            name: "Modular Kits",
+            href: "https://radiantexhibits.com/category/modular-displays/modular-kits",
+          },
+          {
+            name: "Lightbox Kits",
+            href: "https://radiantexhibits.com/category/modular-displays/lightbox-kits",
+          },
+        ],
+      },
+      {
+        name: "Rental",
+        href: "https://radiantexhibits.com/category/rental",
+        grandChildren: [
+          {
+            name: "Graphical Oriented Booths",
+            href: "https://radiantexhibits.com/category/rental/graphic-oriented-booths",
+          },
+          {
+            name: "Product Oriented Booths",
+            href: "https://radiantexhibits.com/category/rental/product-oriented-booths",
+          },
+        ],
+      },
+      {
+        name: "Portable",
+        href: "https://radiantexhibits.com/category/portable-displays",
+        grandChildren: [
+          {
+            name: "Pop Up Displays",
+            href: "https://radiantexhibits.com/category/portable-displays/pop-up-displays",
+          },
+          {
+            name: "Tension Fabric Pop Ups",
+            href: "https://radiantexhibits.com/category/portable-displays/tension-fabric-pop-up",
+          },
+          {
+            name: "Quad Matrix Pop Ups",
+            href: "https://radiantexhibits.com/category/portable-displays/quad-matrix-displays",
+          },
+          {
+            name: "Stretch Fabric Displays",
+            href: "https://radiantexhibits.com/category/portable-displays/stretch-fabric-displays",
+          },
+          {
+            name: "Table Top Displays",
+            href: "https://radiantexhibits.com/category/portable-displays/table-top-displays",
+          },
+          {
+            name: "Lightboxes",
+            href: "https://radiantexhibits.com/category/portable-displays/lightboxes",
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: "About Us",
+    href: "https://radiantexhibits.com/about-us",
+  },
+  {
+    name: "Services",
+    href: "https://radiantexhibits.com/services",
+    children: [
+      {
+        name: "Consultation Services",
+        href: "https://radiantexhibits.com/services/#consultation",
+      },
+      {
+        name: "3D Rendering & Design",
+        href: "https://radiantexhibits.com/services/#3d-rendering",
+      },
+      {
+        name: "Booth Build & Installation",
+        href: "https://radiantexhibits.com/services/installation/",
+      },
+      {
+        name: "Exhibition Equipment Rentals",
+        href: "https://radiantexhibits.com/services/#equipment-rentals",
+      },
+      {
+        name: "System Management",
+        href: "https://radiantexhibits.com/services/system-management",
+      },
+      {
+        name: "White Glove Concierge Service",
+        href: "https://radiantexhibits.com/services/#concierge-service",
+      },
+      {
+        name: "Account Management",
+        href: "https://radiantexhibits.com/services/#exhibitor-management",
+      },
+      {
+        name: "Program Management",
+        href: "https://radiantexhibits.com/services/#program-management",
+      },
+    ],
+  },
+  {
+    name: "Portfolio Gallery",
+    href: "https://radiantexhibits.com/gallery",
+  },
+  {
+    name: "Accessories",
+    href: "https://radiantexhibits.com/category/accessories",
+    alignRight: true,
+    children: [
+      {
+        name: "Banner Stands",
+        href: "https://radiantexhibits.com/category/banner-stands",
+        grandChildren: [
+          {
+            name: "Tube Banner Stands",
+            href: "https://radiantexhibits.com/category/banner-stands/tube-banner-stands",
+          },
+          {
+            name: "Retractable Banner Stands",
+            href: "https://radiantexhibits.com/category/banner-stands/retractable-banner-stands",
+          },
+        ],
+      },
+      {
+        name: "Outdoor Displays",
+        href: "https://radiantexhibits.com/outdoor-displays",
+      },
+      {
+        name: "Hanging Signs",
+        href: "https://radiantexhibits.com/category/accessories/hanging-signs",
+      },
+      {
+        name: "Literature Stands",
+        href: "https://radiantexhibits.com/category/accessories/literature-stands",
+      },
+      {
+        name: "Tablet Stands",
+        href: "https://radiantexhibits.com/category/accessories/tablet-stands",
+      },
+      {
+        name: "Counters",
+        href: "https://radiantexhibits.com/category/accessories/counters",
+      },
+      {
+        name: "Audio Visual & Technology",
+        href: "https://radiantexhibits.com/category/accessories/audio-visual-technology",
+      },
+      {
+        name: "Furniture",
+        href: "https://radiantexhibits.com/category/accessories/furniture",
+      },
+      {
+        name: "Table Throws",
+        href: "https://radiantexhibits.com/category/accessories/table-throws",
+      },
+      {
+        name: "Display Lighting",
+        href: "https://radiantexhibits.com/category/accessories/display-lighting",
+      },
+      {
+        name: "Flooring",
+        href: "https://radiantexhibits.com/category/accessories/flooring",
+      },
+      {
+        name: "Miscellaneous Items",
+        href: "https://radiantexhibits.com/category/accessories/miscellaneous-items",
+      },
+    ],
+  },
+  {
+    name: "Contact Us",
+    href: "https://radiantexhibits.com/contact-us/",
+  },
+];
+---
+
+<header class="fixed top-0 left-0 right-0 z-50">
+  <TopBar />
+  <nav class="bg-white border-b border-gray-100 shadow-sm relative">
+    <div class="max-w-6xl mx-auto px-4 md:px-6">
+      <div class="flex justify-between xl:justify-center items-center h-16 md:h-18">
+        <div class="flex-shrink-0">
+          <a href="https://radiantexhibits.com/" class="flex items-center">
+            <Image
+              src={logoImg}
+              alt="Radiant Exhibits"
+              class="h-8 md:h-11 w-auto object-contain"
+            />
+          </a>
+        </div>
+
+        <div class="hidden xl:flex items-center ml-40">
+          {navItems.map((item) => (
+            <div class="relative group h-18 flex items-center">
+              <a
+                href={item.href}
+                class="flex items-center px-4 py-2 text-[19px] font-[800] text-primary hover:text-secondary transition-colors tracking-tight whitespace-nowrap outline-none"
+              >
+                {item.name}
+                {item.children && (
+                  <svg
+                    class="w-3.5 h-3.5 ml-0.5 opacity-60 group-hover:rotate-180 transition-transform"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2.5"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                )}
+              </a>
+
+              {item.children && (
+                <div
+                  class={`absolute top-full ${item.alignRight ? "right-0" : "left-0"} w-72 bg-white border border-gray-100 shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-[60] rounded-b-lg`}
+                >
+                  <div class="h-1 bg-secondary w-full rounded-t-lg" />
+                  {item.children.map((child) => (
+                    <div class="relative group/sub">
+                      <a
+                        href={child.href}
+                        class="flex justify-between items-center px-5 py-3 text-[15px] font-bold text-secondary hover:bg-gray-50 hover:text-primary border-b border-gray-50 last:border-0 transition-all"
+                      >
+                        {/* If it drops left, place the indicator arrow on the left side */}
+                        {child.alignLeft && child.grandChildren && (
+                          <svg
+                            class="w-3 h-3 rotate-90 opacity-60"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2.5"
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        )}
+
+                        <span class="flex-grow text-left">{child.name}</span>
+
+                        {/* If it drops right (standard), keep indicator arrow on the right side */}
+                        {!child.alignLeft && child.grandChildren && (
+                          <svg
+                            class="w-3 h-3 -rotate-90 opacity-60"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2.5"
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        )}
+                      </a>
+
+                      {/* Grandchildren Flyout: Uses an outer invisible alignment box to preserve mouse tracking safely */}
+                      {child.grandChildren && (
+                        <div
+                          class={`absolute top-0 ${child.alignLeft ? "right-full -mr-1 pr-1" : "left-full -ml-1 pl-1"} w-64 opacity-0 invisible group-hover/sub:opacity-100 group-hover/sub:visible transition-all duration-200 z-[70]`}
+                        >
+                          <div class="bg-white border border-gray-100 shadow-2xl rounded-lg overflow-hidden">
+                            {child.grandChildren.map((gc) => (
+                              <a
+                                href={gc.href}
+                                class="block px-5 py-3 text-[13px] font-bold text-secondary hover:bg-gray-50 hover:text-primary border-b border-gray-50 last:border-0 text-left"
+                              >
+                                {gc.name}
+                              </a>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <button
+          id="mobile-menu-toggle"
+          class="xl:hidden p-2 text-primary focus:outline-none"
+        >
+          <svg
+            class="w-7 h-7"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              id="hamburger-icon"
+              class="block"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M4 6h16M4 12h16m-7 6h7"
+            ></path>
+            <path
+              id="close-icon"
+              class="hidden"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2.5"
+              d="M6 18L18 6M6 6l12 12"
+            ></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="mobile-menu"
+      class="hidden xl:hidden bg-white border-t border-gray-100 absolute w-full left-0 shadow-2xl max-h-[85vh] overflow-y-auto"
+    >
+      <div class="flex flex-col p-4 space-y-1">
+        {navItems.map((item, index) => (
+          <div class="border-b border-gray-50 last:border-none">
+            <div class="flex justify-between items-center w-full">
+              <a
+                href={item.href}
+                class="text-[13px] font-black text-primary uppercase py-3 flex-grow"
+              >
+                {item.name}
+              </a>
+              {item.children && (
+                <button
+                  class="mobile-dropdown-btn p-3 outline-none"
+                  data-target={`dropdown-${index}`}
+                >
+                  <svg
+                    class="w-4 h-4 transition-transform duration-200 arrow-icon"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="3"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </button>
+              )}
+            </div>
+
+            {item.children && (
+              <div
+                id={`dropdown-${index}`}
+                class="hidden pl-4 mb-2 space-y-1 overflow-hidden transition-all duration-300"
+              >
+                {item.children.map((child, cIndex) => (
+                  <div>
+                    <div class="flex justify-between items-center">
+                      <a
+                        href={child.href}
+                        class="block text-[12px] font-bold text-secondary py-2 border-l-2 border-gray-100 pl-3 hover:text-primary transition-colors flex-grow"
+                      >
+                        {child.name}
+                      </a>
+                      {child.grandChildren && (
+                        <button
+                          class="mobile-dropdown-btn p-2"
+                          data-target={`grandchild-${index}-${cIndex}`}
+                        >
+                          <svg
+                            class="w-3 h-3 arrow-icon"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="3"
+                              d="M19 9l-7 7-7-7"
+                            />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                    {child.grandChildren && (
+                      <div
+                        id={`grandchild-${index}-${cIndex}`}
+                        class="hidden pl-6 space-y-1"
+                      >
+                        {child.grandChildren.map((gc) => (
+                          <a
+                            href={gc.href}
+                            class="block text-[11px] font-bold text-gray-500 py-2 hover:text-primary"
+                          >
+                            {gc.name}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </nav>
+</header>
+
+<script>
+  function setupNavbar() {
+    const toggleBtn = document.getElementById("mobile-menu-toggle");
+    const menu = document.getElementById("mobile-menu");
+    const hamburger = document.getElementById("hamburger-icon");
+    const close = document.getElementById("close-icon");
+
+    toggleBtn?.addEventListener("click", () => {
+      const isHidden = menu?.classList.contains("hidden");
+      if (isHidden) {
+        menu?.classList.remove("hidden");
+        hamburger?.classList.replace("block", "hidden");
+        close?.classList.replace("hidden", "block");
+      } else {
+        menu?.classList.add("hidden");
+        hamburger?.classList.replace("hidden", "block");
+        close?.classList.replace("block", "hidden");
+      }
+    });
+
+    const dropdownBtns = document.querySelectorAll(".mobile-dropdown-btn");
+    dropdownBtns.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const targetId = btn.getAttribute("data-target");
+        const targetContent = document.getElementById(targetId);
+        const arrow = btn.querySelector(".arrow-icon");
+
+        if (targetContent) {
+          targetContent.classList.toggle("hidden");
+          arrow?.classList.toggle("rotate-180");
+        }
+      });
+    });
+  }
+
+  setupNavbar();
+  document.addEventListener("astro:after-swap", setupNavbar);
+</script>
+
+<style>
+  .group:hover > div {
+    transform: translateY(0);
+  }
+  .group > div {
+    transform: translateY(5px);
+  }
+
+  /* Animation tracking configuration layers */
+  .group\/sub:hover > div {
+    transform: translateX(0);
+  }
+  .group\/sub > div {
+    transform: translateX(5px);
+  }
+
+  #mobile-menu {
+    animation: fadeIn 0.2s ease-out;
+  }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>

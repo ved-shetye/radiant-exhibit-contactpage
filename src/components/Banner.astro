@@ -1,0 +1,71 @@
+---
+import { Image } from 'astro:assets';
+import heroDesktop from '../assets/Banner.jpg';
+import heroMobile from '../assets/Banner.jpg';
+---
+
+<section
+  id="contact-banner"
+  class="relative min-h-[30vh] md:min-h-[38vh] flex items-center justify-center pt-28 md:pt-36 pb-12 md:pb-16 overflow-hidden bg-slate-950 font-sans"
+>
+  <!-- Background Image with Overlay -->
+  <div class="absolute inset-0 z-0">
+    <div class="hidden lg:block w-full h-full">
+      <Image
+        src={heroDesktop}
+        alt="Radiant Exhibits - Contact Us"
+        class="w-full h-full object-cover object-center animate-slow-zoom"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-black/60 to-black/70"></div>
+    </div>
+    
+    <div class="lg:hidden w-full h-full">
+      <Image
+        src={heroMobile}
+        alt="Radiant Exhibits - Contact Us"
+        class="w-full h-full object-cover object-center"
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-black/65 to-black/75"></div>
+    </div>
+  </div>
+
+  <!-- Decorative subtle ambient glow -->
+  <div class="absolute -top-24 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-primary/20 rounded-full blur-[120px] pointer-events-none z-0"></div>
+
+  <!-- Banner Content -->
+  <div class="relative z-10 max-w-5xl mx-auto px-4 w-full text-center">
+    <!-- Breadcrumb -->
+    <nav aria-label="Breadcrumb" class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-xs md:text-sm font-semibold text-white/80 mb-5">
+      <a href="https://radiantexhibits.com" class="hover:text-primary transition-colors">Home</a>
+      <span class="text-white/40">/</span>
+      <span class="text-primary font-bold">Contact Us</span>
+    </nav>
+
+    <!-- Title -->
+    <h1
+      class="text-[32px] sm:text-[42px] md:text-[56px] font-[1000] leading-[1.1] tracking-tight !text-white mb-4 uppercase drop-shadow-2xl"
+    >
+      Contact Us
+    </h1>
+
+    <!-- Subtitle / Tagline -->
+    <p class="text-white/85 text-[15px] sm:text-[17px] md:text-[19px] max-w-2xl mx-auto font-normal leading-relaxed">
+      Let's bring your brand vision to life with custom trade show booths, modular displays, and turnkey exhibit solutions.
+    </p>
+  </div>
+</section>
+
+<style>
+  @keyframes slow-zoom {
+    0% { transform: scale(1.0); }
+    100% { transform: scale(1.06); }
+  }
+
+  .animate-slow-zoom {
+    animation: slow-zoom 22s infinite alternate ease-in-out;
+  }
+
+  .drop-shadow-2xl {
+    text-shadow: 0 4px 18px rgba(0, 0, 0, 0.85);
+  }
+</style>

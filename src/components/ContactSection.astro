@@ -1,0 +1,485 @@
+---
+import { 
+  MapPin, 
+  Phone, 
+  PhoneCall, 
+  Mail, 
+  Send, 
+  Clock, 
+  CheckCircle2, 
+  AlertCircle,
+  ExternalLink,
+  Building2,
+  Calendar
+} from 'lucide-astro';
+
+const web3FormsAccessKey = import.meta.env.PUBLIC_WEB3FORMS_ACCESS_KEY || "YOUR_ACCESS_KEY_HERE";
+---
+
+<section id="contact-details" class="relative py-12 md:py-20 bg-slate-50 font-sans overflow-hidden">
+  <!-- Subtle ambient decorative elements -->
+  <div class="absolute top-0 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl pointer-events-none"></div>
+  <div class="absolute bottom-0 left-1/4 w-96 h-96 bg-sky-200/20 rounded-full blur-3xl pointer-events-none"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+
+    <!-- Top Contact Cards (Address, Local Phone, Toll Free, Email) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-12 md:mb-16">
+      
+      <!-- Card 1: Address -->
+      <div 
+        data-reveal 
+        data-delay="1"
+        class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md border border-slate-200/80 transition-all duration-300 group flex flex-col justify-between"
+      >
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+            <MapPin class="w-6 h-6" />
+          </div>
+          <span class="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 block mb-1">
+            Office & Facility
+          </span>
+          <h3 class="text-base font-black text-slate-800 mb-2">Our Address</h3>
+          <p class="text-sm text-slate-600 font-medium leading-relaxed">
+            150 Milner Ave, Unit #19<br />
+            Toronto, ON M1S 3R3
+          </p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100">
+          <a 
+            href="https://maps.google.com/?q=150+Milner+Ave,+Unit+%2319,+Toronto,+ON+M1S+3R3" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:text-sky-700 transition-colors"
+          >
+            Open in Google Maps
+            <ExternalLink class="w-3.5 h-3.5" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 2: Phone Number -->
+      <div 
+        data-reveal 
+        data-delay="2"
+        class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md border border-slate-200/80 transition-all duration-300 group flex flex-col justify-between"
+      >
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+            <Phone class="w-6 h-6" />
+          </div>
+          <span class="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 block mb-1">
+            Local Line (Toronto)
+          </span>
+          <h3 class="text-base font-black text-slate-800 mb-2">Phone Number</h3>
+          <p class="text-lg font-black text-slate-900 leading-snug">
+            416-412-0500
+          </p>
+          <p class="text-xs text-slate-500 mt-1">Mon - Fri: 9:00 AM - 5:30 PM EST</p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100">
+          <a 
+            href="tel:4164120500" 
+            class="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:text-sky-700 transition-colors"
+          >
+            Call Now
+            <Phone class="w-3.5 h-3.5" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 3: Toll Free Number -->
+      <div 
+        data-reveal 
+        data-delay="3"
+        class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md border border-slate-200/80 transition-all duration-300 group flex flex-col justify-between"
+      >
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+            <PhoneCall class="w-6 h-6" />
+          </div>
+          <span class="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 block mb-1">
+            Toll Free (North America)
+          </span>
+          <h3 class="text-base font-black text-slate-800 mb-2">Toll Free Number</h3>
+          <p class="text-lg font-black text-slate-900 leading-snug">
+            1-855-412-0500
+          </p>
+          <p class="text-xs text-slate-500 mt-1">Available across Canada & USA</p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100">
+          <a 
+            href="tel:18554120500" 
+            class="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:text-sky-700 transition-colors"
+          >
+            Call Toll Free
+            <PhoneCall class="w-3.5 h-3.5" />
+          </a>
+        </div>
+      </div>
+
+      <!-- Card 4: Email -->
+      <div 
+        data-reveal 
+        data-delay="4"
+        class="bg-white rounded-2xl p-6 shadow-sm hover:shadow-md border border-slate-200/80 transition-all duration-300 group flex flex-col justify-between"
+      >
+        <div>
+          <div class="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+            <Mail class="w-6 h-6" />
+          </div>
+          <span class="text-[11px] font-extrabold uppercase tracking-widest text-slate-400 block mb-1">
+            Direct Email
+          </span>
+          <h3 class="text-base font-black text-slate-800 mb-2">Email Address</h3>
+          <p class="text-sm sm:text-base font-bold text-slate-900 break-all leading-snug">
+            sales@radiantexhibits.com
+          </p>
+          <p class="text-xs text-slate-500 mt-1">Prompt responses within 24 hours</p>
+        </div>
+        <div class="mt-4 pt-3 border-t border-slate-100">
+          <a 
+            href="mailto:sales@radiantexhibits.com" 
+            class="inline-flex items-center gap-1.5 text-xs font-bold text-primary hover:text-sky-700 transition-colors"
+          >
+            Send Email
+            <Mail class="w-3.5 h-3.5" />
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Main Two-Column Section: Map Location & Form Section -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-stretch">
+      
+      <!-- Left Column: Map Location Embed & Office Profile (5 Cols) -->
+      <div data-reveal data-delay="2" class="lg:col-span-5 flex flex-col justify-between space-y-6">
+        
+        <div class="bg-white rounded-2xl md:rounded-3xl p-6 md:p-8 shadow-sm border border-slate-200/80 flex-1 flex flex-col justify-between">
+          <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-3">
+              <Building2 class="w-3.5 h-3.5" />
+              Our Location
+            </div>
+            
+            <h2 class="text-2xl md:text-3xl font-[1000] text-slate-900 tracking-tight mb-3">
+              Visit Our Toronto Showroom
+            </h2>
+            
+            <p class="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
+              Centrally located in Toronto, Ontario. Visit us to inspect sample booth finishes, modular frames, and discuss your upcoming exhibit vision in person.
+            </p>
+
+            <div class="space-y-3 mb-6 bg-slate-50 p-4 rounded-xl border border-slate-100">
+              <div class="flex items-start gap-3">
+                <MapPin class="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                <div>
+                  <strong class="text-slate-900 text-sm block">150 Milner Ave, Unit #19</strong>
+                  <span class="text-slate-500 text-xs">Toronto, ON M1S 3R3, Canada</span>
+                </div>
+              </div>
+              <div class="flex items-center gap-3">
+                <Clock class="w-5 h-5 text-primary shrink-0" />
+                <span class="text-slate-600 text-xs font-medium">Monday – Friday: 9:00 AM – 5:30 PM EST</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Google Maps Embed -->
+          <div class="relative w-full h-[280px] sm:h-[320px] rounded-2xl overflow-hidden border border-slate-200 shadow-inner group">
+            <iframe
+              title="Radiant Exhibits Location Map"
+              src="https://maps.google.com/maps?q=150%20Milner%20Ave%20Unit%2019%20Toronto%20ON%20M1S%203R3&t=&z=15&ie=UTF8&iwloc=&output=embed"
+              class="w-full h-full border-0"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+            
+            <!-- Quick Directions Floating Pill -->
+            <a
+              href="https://maps.google.com/?q=150+Milner+Ave,+Unit+%2319,+Toronto,+ON+M1S+3R3"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="absolute bottom-3 right-3 bg-white/95 backdrop-blur shadow-md hover:bg-primary hover:text-white text-slate-800 text-xs font-bold py-2 px-3 rounded-lg border border-slate-200 transition-all flex items-center gap-1.5"
+            >
+              Get Directions
+              <ExternalLink class="w-3 h-3" />
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Column: FORM SECTION (7 Cols) -->
+      <div data-reveal data-delay="3" class="lg:col-span-7">
+        <div class="bg-white rounded-2xl md:rounded-3xl p-6 sm:p-8 md:p-10 shadow-md border border-slate-200/90 h-full flex flex-col justify-between">
+          
+          <!-- Form Header -->
+          <div class="mb-6 md:mb-8">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-3">
+              <Send class="w-3.5 h-3.5" />
+              Quick Inquiries
+            </div>
+            
+            <h2 class="text-2xl sm:text-3xl md:text-4xl font-[1000] text-slate-900 tracking-tight mb-2">
+              Send Us an Inquiry
+            </h2>
+            
+            <p class="text-slate-600 text-sm md:text-base leading-relaxed">
+              Have an upcoming trade show or exhibition? Send your project details and our team will provide a tailored quote and expert guidance.
+            </p>
+          </div>
+
+          <!-- Web3Forms Form -->
+          <form 
+            id="inquiry-form" 
+            action="https://api.web3forms.com/submit" 
+            method="POST" 
+            class="space-y-4 sm:space-y-5"
+          >
+            <!-- Web3Forms Configuration Hidden Parameters -->
+            <input type="hidden" name="access_key" value={web3FormsAccessKey} />
+            <input type="hidden" name="subject" value="[New Inquiry] Send Us an Inquiry - Radiant Exhibits Contact Page" />
+            <input type="hidden" name="from_name" value="Radiant Exhibits Contact Form" />
+            <input type="hidden" name="form_name" value="Contact Us Inquiry Form" />
+            <input type="hidden" name="page_url" id="contact_page_url" value="" />
+            
+            <!-- Honeypot Botcheck -->
+            <input type="checkbox" name="botcheck" class="hidden" style="display: none;" />
+
+            <!-- Grid for 2-column inputs on tablet+ -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              
+              <!-- Name Field -->
+              <div>
+                <label for="name" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Full Name <span class="text-rose-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  required
+                  placeholder="e.g. John Smith"
+                  class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                />
+              </div>
+
+              <!-- Company Name Field -->
+              <div>
+                <label for="company" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Company Name <span class="text-rose-500">*</span>
+                </label>
+                <input
+                  type="text"
+                  id="company"
+                  name="company"
+                  required
+                  placeholder="e.g. Acme Corporation"
+                  class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                />
+              </div>
+
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              
+              <!-- Email ID Field -->
+              <div>
+                <label for="email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Email ID <span class="text-rose-500">*</span>
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  required
+                  placeholder="name@company.com"
+                  class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                />
+              </div>
+
+              <!-- Phone Field -->
+              <div>
+                <label for="phone" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                  Phone Number <span class="text-rose-500">*</span>
+                </label>
+                <input
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  required
+                  placeholder="e.g. 416-000-0000"
+                  class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none"
+                />
+              </div>
+
+            </div>
+
+            <!-- Reason for Inquiry Field -->
+            <div>
+              <label for="reason" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Reason for Inquiry <span class="text-rose-500">*</span>
+              </label>
+              <div class="relative">
+                <select
+                  id="reason"
+                  name="reason"
+                  required
+                  class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none appearance-none cursor-pointer"
+                >
+                  <option value="" disabled selected>Please select a reason...</option>
+                  <option value="Custom Trade Show Booth Design">Custom Trade Show Booth Design</option>
+                  <option value="Trade Show Booth Rentals">Trade Show Booth Rentals</option>
+                  <option value="Modular Display Systems">Modular Display Systems</option>
+                  <option value="Installation & Dismantle Services">Installation & Dismantle Services</option>
+                  <option value="3D Rendering & Graphic Design">3D Rendering & Graphic Design</option>
+                  <option value="Accessories & Furniture Rental">Accessories & Furniture Rental</option>
+                  <option value="Free Consultation / General Inquiry">Free Consultation / General Inquiry</option>
+                </select>
+                <div class="absolute inset-y-0 right-0 flex items-center px-4 pointer-events-none text-slate-500">
+                  <svg class="w-4 h-4 fill-current" viewBox="0 0 20 20">
+                    <path d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Additional Project Details / Message -->
+            <div>
+              <label for="message" class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">
+                Project Notes / Details <span class="text-slate-400 font-normal normal-case">(Optional)</span>
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                rows="3"
+                placeholder="Tell us about your upcoming trade show, booth size (e.g. 10x10, 10x20, 20x20), target venue, or event dates..."
+                class="w-full px-4 py-3 rounded-xl bg-slate-50 border border-slate-300 text-slate-900 text-sm font-medium focus:bg-white focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all outline-none resize-y"
+              ></textarea>
+            </div>
+
+            <!-- Submit Button & Feedback Status -->
+            <div class="pt-2">
+              <button
+                type="submit"
+                id="submit-btn"
+                class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 bg-primary hover:bg-sky-600 active:scale-[0.98] text-white px-8 py-3.5 rounded-xl font-black text-sm uppercase tracking-wider shadow-lg shadow-primary/25 hover:shadow-primary/35 transition-all duration-200 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                <span id="btn-text">Send Us an Inquiry</span>
+                <Send id="btn-icon" class="w-4 h-4" />
+                <svg id="btn-spinner" class="w-4 h-4 animate-spin hidden" viewBox="0 0 24 24" fill="none">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+              </button>
+
+              <span class="block sm:inline-block sm:ml-4 text-xs text-slate-500 mt-2 sm:mt-0">
+                🔒 Your privacy is protected. We will never share your information.
+              </span>
+            </div>
+
+            <!-- Form Feedback Notifications -->
+            <div id="form-success" class="hidden mt-4 p-4 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm font-medium flex items-start gap-3">
+              <CheckCircle2 class="w-5 h-5 text-emerald-600 shrink-0 mt-0.5" />
+              <div>
+                <strong class="font-bold text-emerald-900 block">Thank you! Your inquiry has been sent.</strong>
+                Our team at Radiant Exhibits will review your request and get back to you within 24 business hours. You can also scroll below to schedule a live consultation!
+              </div>
+            </div>
+
+            <div id="form-error" class="hidden mt-4 p-4 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-sm font-medium flex items-start gap-3">
+              <AlertCircle class="w-5 h-5 text-rose-600 shrink-0 mt-0.5" />
+              <div id="form-error-msg">
+                <strong class="font-bold text-rose-900 block">Submission error.</strong>
+                Something went wrong while submitting the form. Please check your details or call us directly at 416-412-0500.
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<script>
+  // Set current URL in hidden field for Web3Forms parameter tracking
+  const urlField = document.getElementById("contact_page_url") as HTMLInputElement | null;
+  if (urlField) {
+    urlField.value = window.location.href;
+  }
+
+  // Handle Form Submission with Web3Forms AJAX
+  const form = document.getElementById("inquiry-form") as HTMLFormElement | null;
+  const submitBtn = document.getElementById("submit-btn") as HTMLButtonElement | null;
+  const btnText = document.getElementById("btn-text");
+  const btnIcon = document.getElementById("btn-icon");
+  const btnSpinner = document.getElementById("btn-spinner");
+  const successBox = document.getElementById("form-success");
+  const errorBox = document.getElementById("form-error");
+  const errorMsg = document.getElementById("form-error-msg");
+
+  if (form && submitBtn) {
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      // Ensure page URL is populated
+      if (urlField) {
+        urlField.value = window.location.href;
+      }
+
+      // Hide prior alerts
+      if (successBox) successBox.classList.add("hidden");
+      if (errorBox) errorBox.classList.add("hidden");
+
+      // Set loading state
+      submitBtn.disabled = true;
+      if (btnText) btnText.textContent = "Sending Inquiry...";
+      if (btnIcon) btnIcon.classList.add("hidden");
+      if (btnSpinner) btnSpinner.classList.remove("hidden");
+
+      try {
+        const formData = new FormData(form);
+        const response = await fetch("https://api.web3forms.com/submit", {
+          method: "POST",
+          body: formData,
+        });
+
+        const data = await response.json();
+
+        if (response.status === 200 && data.success) {
+          form.reset();
+          if (successBox) {
+            successBox.classList.remove("hidden");
+            successBox.scrollIntoView({ behavior: "smooth", block: "nearest" });
+          }
+        } else {
+          if (errorBox) {
+            errorBox.classList.remove("hidden");
+            if (errorMsg) {
+              errorMsg.innerHTML = `<strong class="font-bold text-rose-900 block">Notice:</strong> ${data.message || "Unable to send inquiry. Please call us at 416-412-0500."}`;
+            }
+          }
+        }
+      } catch (err) {
+        if (errorBox) {
+          errorBox.classList.remove("hidden");
+          if (errorMsg) {
+            errorMsg.innerHTML = `<strong class="font-bold text-rose-900 block">Network Error:</strong> Unable to reach form server. Please call us directly at 416-412-0500.`;
+          }
+        }
+      } finally {
+        submitBtn.disabled = false;
+        if (btnText) btnText.textContent = "Send Us an Inquiry";
+        if (btnIcon) btnIcon.classList.remove("hidden");
+        if (btnSpinner) btnSpinner.classList.add("hidden");
+      }
+    });
+  }
+</script>

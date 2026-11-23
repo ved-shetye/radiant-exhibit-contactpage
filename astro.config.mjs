@@ -4,7 +4,7 @@ import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
   site: 'https://radiantexhibits.com',
-  base: '/contact-us',
+  base: '/',
   output: 'static',
   vite: {
     plugins: [tailwindcss()]

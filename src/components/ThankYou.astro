@@ -70,14 +70,10 @@ const GoogleCalenderUrl = import.meta.env.PUBLIC_GOOGLE_CALENDER_URL;
       data-delay="3"
       class="mt-12 bg-white rounded-2xl shadow-xl overflow-hidden max-w-5xl mx-auto border border-gray-200 scroll-mt-28"
     >
-      <iframe
-        src={GoogleCalenderUrl}
-        width="100%"
-        height="700"
-        frameborder="0"
-        class="w-full"
-        loading="lazy"
-      ></iframe>
+      <!-- Calendly inline widget begin -->
+      <div class="calendly-inline-widget" data-url="https://calendly.com/radiantexhibits/30min" style="min-width:320px;height:700px;"></div>
+      <script type="text/javascript" src="https://assets.calendly.com/assets/external/widget.js" async></script>
+      <!-- Calendly inline widget end -->
     </div>
 
   </div>

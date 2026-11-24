@@ -213,14 +213,19 @@ const navItems = [
     name: "Contact Us",
     href: "https://radiantexhibits.com/contact-us/",
   },
+  {
+    name: "Book Consultation",
+    href: "https://radiantexhibits.com/contact-us/",
+    isButton: true,
+  },
 ];
 ---
 
 <header class="fixed top-0 left-0 right-0 z-50">
   <TopBar />
   <nav class="bg-white border-b border-gray-100 shadow-sm relative">
-    <div class="max-w-6xl mx-auto px-4 md:px-6">
-      <div class="flex justify-between xl:justify-center items-center h-16 md:h-18">
+    <div class="max-w-7xl mx-auto px-4 md:px-6">
+      <div class="flex justify-between items-center h-16 md:h-18">
         <div class="flex-shrink-0">
           <a href="https://radiantexhibits.com/" class="flex items-center">
             <Image
@@ -231,30 +236,39 @@ const navItems = [
           </a>
         </div>
 
-        <div class="hidden xl:flex items-center ml-40">
+        <div class="hidden xl:flex items-center ml-auto">
           {navItems.map((item) => (
             <div class="relative group h-18 flex items-center">
-              <a
-                href={item.href}
-                class="flex items-center px-4 py-2 text-[19px] font-[800] text-primary hover:text-secondary transition-colors tracking-tight whitespace-nowrap outline-none"
-              >
-                {item.name}
-                {item.children && (
-                  <svg
-                    class="w-3.5 h-3.5 ml-0.5 opacity-60 group-hover:rotate-180 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2.5"
-                      d="M19 9l-7 7-7-7"
-                    />
-                  </svg>
-                )}
-              </a>
+              {item.isButton ? (
+                <a
+                  href={item.href}
+                  class="flex items-center justify-center px-4 py-2 ml-2 2xl:ml-3 text-[15px] 2xl:text-[16px] font-[800] text-white bg-primary hover:bg-[#1e7ca6] border-2 border-primary hover:border-[#1e7ca6] rounded-xl shadow-md hover:shadow-lg hover:scale-[1.02] active:scale-95 transition-all tracking-tight whitespace-nowrap cursor-pointer"
+                >
+                  {item.name}
+                </a>
+              ) : (
+                <a
+                  href={item.href}
+                  class="flex items-center px-2.5 2xl:px-4 py-2 text-[16px] 2xl:text-[19px] font-[800] text-primary hover:text-secondary transition-colors tracking-tight whitespace-nowrap outline-none"
+                >
+                  {item.name}
+                  {item.children && (
+                    <svg
+                      class="w-3.5 h-3.5 ml-0.5 opacity-60 group-hover:rotate-180 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2.5"
+                        d="M19 9l-7 7-7-7"
+                      />
+                    </svg>
+                  )}
+                </a>
+              )}
 
               {item.children && (
                 <div
@@ -368,12 +382,23 @@ const navItems = [
         {navItems.map((item, index) => (
           <div class="border-b border-gray-50 last:border-none">
             <div class="flex justify-between items-center w-full">
-              <a
-                href={item.href}
-                class="text-[13px] font-black text-primary uppercase py-3 flex-grow"
-              >
-                {item.name}
-              </a>
+              {item.isButton ? (
+                <div class="py-2.5 w-full">
+                  <a
+                    href={item.href}
+                    class="flex items-center justify-center w-full py-3 px-4 text-[14px] font-black text-white bg-primary hover:bg-[#1e7ca6] border-2 border-primary rounded-xl text-center uppercase tracking-wider shadow-md active:scale-95 transition-all"
+                  >
+                    {item.name}
+                  </a>
+                </div>
+              ) : (
+                <a
+                  href={item.href}
+                  class="text-[13px] font-black text-primary uppercase py-3 flex-grow"
+                >
+                  {item.name}
+                </a>
+              )}
               {item.children && (
                 <button
                   class="mobile-dropdown-btn p-3 outline-none"

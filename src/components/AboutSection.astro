@@ -1,12 +1,12 @@
 ---
-import { Image } from 'astro:assets';
+import { Image } from "astro:assets";
 
-import img1 from '../assets/Solutions/img1.jpg';
-import img2 from '../assets/Solutions/img2.jpg';
-import img3 from '../assets/Solutions/img3.jpg';
-import img4 from '../assets/Solutions/img4.jpeg';
-import img5 from '../assets/Solutions/img5.jpeg';
-import img6 from '../assets/Solutions/img6.JPG';
+import img1 from "../assets/Solutions/img1.jpg";
+import img2 from "../assets/Solutions/img2.jpg";
+import img3 from "../assets/Solutions/img3.jpg";
+import img4 from "../assets/Solutions/img4.jpeg";
+import img5 from "../assets/Solutions/img5.jpeg";
+import img6 from "../assets/Solutions/img6.JPG";
 
 const sections = [
   {
@@ -14,58 +14,57 @@ const sections = [
     imageClass: "h-[200px] md:h-[300px] w-full",
     primaryTitle: "Complete Booth Installation Services",
     secondaryTitle: "by Radiant Exhibits",
-    text: "At Radiant Exhibits, we provide full-fledged booth installation services designed to deliver a seamless and stress-free exhibiting experience. From the moment your booth components arrive at the venue to the final finishing touches, our expert team ensures every detail is executed with precision, efficiency, and care—so your brand is ready to shine when the doors open."
+    text: "At Radiant Exhibits, we provide full-fledged booth installation services designed to deliver a seamless and stress-free exhibiting experience. From the moment your booth components arrive at the venue to the final finishing touches, our expert team ensures every detail is executed with precision, efficiency, and care—so your brand is ready to shine when the doors open.",
   },
   {
     image: img2,
     imageClass: "h-[200px] md:h-[300px] w-full",
     primaryTitle: "End-to-End Execution",
     secondaryTitle: "You Can Rely On",
-    text: "Our installation services cover every aspect of booth setup, including structural assembly, electrical and lighting integration, flooring, and graphic installation. Whether it’s a custom-designed exhibit or a modular rental booth, we follow a structured and efficient process to ensure everything is installed exactly as planned. We work in full compliance with venue regulations and safety standards, eliminating any last-minute surprises."
+    text: "Our installation services cover every aspect of booth setup, including structural assembly, electrical and lighting integration, flooring, and graphic installation. Whether it’s a custom-designed exhibit or a modular rental booth, we follow a structured and efficient process to ensure everything is installed exactly as planned. We work in full compliance with venue regulations and safety standards, eliminating any last-minute surprises.",
   },
   {
     image: img3,
     imageClass: "h-[200px] md:h-[300px] w-full",
     primaryTitle: "Timely Delivery,",
     secondaryTitle: "Flawless Setup",
-    text: "We understand that trade shows run on strict timelines. Our experienced installation team is trained to work within tight build-up schedules without compromising on quality. With meticulous planning and on-ground coordination, we ensure your booth is fully installed, tested, and ready well before the event begins—giving you complete peace of mind."
+    text: "We understand that trade shows run on strict timelines. Our experienced installation team is trained to work within tight build-up schedules without compromising on quality. With meticulous planning and on-ground coordination, we ensure your booth is fully installed, tested, and ready well before the event begins—giving you complete peace of mind.",
   },
   {
     image: img4,
     imageClass: "h-[200px] md:h-[300px] w-full",
     primaryTitle: "Stress-Free Experience",
     secondaryTitle: "from Start to Finish",
-    text: "With Radiant Exhibits handling your booth installation, you don’t have to worry about logistics, manpower, or coordination. We manage everything—from unloading and assembly to final detailing—so you can focus on what truly matters: engaging with your audience and maximizing your event performance."
+    text: "With Radiant Exhibits handling your booth installation, you don’t have to worry about logistics, manpower, or coordination. We manage everything—from unloading and assembly to final detailing—so you can focus on what truly matters: engaging with your audience and maximizing your event performance.",
   },
   {
     image: img5,
     imageClass: "h-[200px] md:h-[300px] w-full",
     primaryTitle: "On-Site Assistance",
     secondaryTitle: "& Efficient Dismantling",
-    text: "Our commitment doesn’t end at installation. We offer on-site support during the event if needed, ensuring everything runs smoothly. Once the event concludes, our team handles the dismantling process with the same level of care, ensuring all components are safely packed and managed for storage or return."
+    text: "Our commitment doesn’t end at installation. We offer on-site support during the event if needed, ensuring everything runs smoothly. Once the event concludes, our team handles the dismantling process with the same level of care, ensuring all components are safely packed and managed for storage or return.",
   },
   {
     image: img6,
     imageClass: "h-[200px] md:h-[300px] w-full",
     primaryTitle: "Built to Scale",
     secondaryTitle: "for Every Event",
-    text: "Whether you’re participating in a small exhibition or a large international trade show, our installation services are tailored to meet your specific needs. No matter the size or complexity of your booth, Radiant Exhibits delivers consistent quality, professionalism, and reliability."
-  }
+    text: "Whether you’re participating in a small exhibition or a large international trade show, our installation services are tailored to meet your specific needs. No matter the size or complexity of your booth, Radiant Exhibits delivers consistent quality, professionalism, and reliability.",
+  },
 ];
 ---
 
-<section id="features" class="py-8 md:py-20 bg-white overflow-hidden">
+<section id="features" class="py-5 md:py-10 bg-white overflow-hidden">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-
     {sections.map((item, index) => (
       <div
         class={`grid lg:grid-cols-2 gap-8 lg:gap-16 items-center ${
-          index !== sections.length - 1 ? 'mb-12 md:mb-28' : ''
+          index !== sections.length - 1 ? "mb-12 md:mb-28" : ""
         }`}
       >
         {/* Image */}
         <div
-          class={`${index % 2 !== 0 ? 'lg:order-2' : ''}`}
+          class={`${index % 2 !== 0 ? "lg:order-2" : ""}`}
           data-reveal
           data-delay="1"
         >
@@ -73,27 +72,22 @@ const sections = [
             <div class="absolute -inset-2 md:-inset-4 bg-secondary/25 rounded-[32px] rotate-[-2deg]"></div>
 
             <Image
-                src={item.image}
-                alt={`${item.primaryTitle} ${item.secondaryTitle}`}
-                class={`h-[200px] md:h-full w-full md:w-full relative z-10 object-cover rounded-[28px] shadow-2xl ${item.imageClass}`}
+              src={item.image}
+              alt={`${item.primaryTitle} ${item.secondaryTitle}`}
+              class={`h-[200px] md:h-full w-full md:w-full relative z-10 object-cover rounded-[28px] shadow-2xl ${item.imageClass}`}
             />
           </div>
         </div>
 
         {/* Content */}
         <div
-          class={`px-4 ${index % 2 !== 0 ? 'lg:order-1' : ''}`}
+          class={`px-4 ${index % 2 !== 0 ? "lg:order-1" : ""}`}
           data-reveal
           data-delay="2"
         >
-
           <h3 class="text-[24px] md:text-[38px] leading-[1.05] tracking-[-1px] font-[900] mb-6">
-            <span class="text-primary">
-                {item.primaryTitle}
-            </span>
-            <span class="text-secondary">
-                {item.secondaryTitle}
-            </span>
+            <span class="text-primary">{item.primaryTitle}</span>
+            <span class="text-secondary">{item.secondaryTitle}</span>
           </h3>
 
           <p class="text-slate-600 text-[14px] md:text-[17px] leading-[1.9]">
@@ -102,7 +96,6 @@ const sections = [
         </div>
       </div>
     ))}
-
   </div>
 </section>
 

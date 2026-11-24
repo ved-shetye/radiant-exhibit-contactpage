@@ -1,12 +1,12 @@
 ---
-import { Image } from 'astro:assets';
-import heroDesktop from '../assets/Banner.jpg';
-import heroMobile from '../assets/Banner.jpg';
+import { Image } from "astro:assets";
+import heroDesktop from "../assets/Banner.jpg";
+import heroMobile from "../assets/Banner.jpg";
 ---
 
 <section
   id="contact-banner"
-  class="relative min-h-[30vh] md:min-h-[38vh] flex items-center justify-center pt-28 md:pt-36 pb-12 md:pb-16 overflow-hidden bg-slate-950 font-sans"
+  class="relative min-h-[30vh] md:min-h-[38vh] flex items-center justify-center pt-28 md:pt-46 pb-12 md:pb-16 overflow-hidden bg-slate-950 font-sans"
 >
   <!-- Background Image with Overlay -->
   <div class="absolute inset-0 z-0">
@@ -18,7 +18,7 @@ import heroMobile from '../assets/Banner.jpg';
       />
       <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-black/60 to-black/70"></div>
     </div>
-    
+
     <div class="lg:hidden w-full h-full">
       <Image
         src={heroMobile}
@@ -35,9 +35,7 @@ import heroMobile from '../assets/Banner.jpg';
   <!-- Banner Content -->
   <div class="relative z-10 max-w-5xl mx-auto px-4 w-full text-center">
     <!-- Title -->
-    <h1
-      class="text-[34px] sm:text-[44px] md:text-[58px] font-[1000] leading-[1.1] tracking-tight !text-white uppercase drop-shadow-2xl"
-    >
+    <h1 class="text-[42px] sm:text-[44px] md:text-[58px] font-[1000] leading-[1.1] tracking-tight !text-white uppercase drop-shadow-2xl">
       Contact Us
     </h1>
   </div>
@@ -45,8 +43,12 @@ import heroMobile from '../assets/Banner.jpg';
 
 <style>
   @keyframes slow-zoom {
-    0% { transform: scale(1.0); }
-    100% { transform: scale(1.06); }
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.06);
+    }
   }
 
   .animate-slow-zoom {

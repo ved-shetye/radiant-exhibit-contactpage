@@ -1,7 +1,3 @@
----
-const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY || "";
----
-
 <div class="chatbot-wrapper">
 
   <button id="chat-bubble" class="chat-bubble" aria-label="Open Chat">
@@ -25,7 +21,7 @@ const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_A
         </div>
         <div>
           <h3>Radiant Assistant</h3>
-          <p>Online now</p>
+          <p>Instant Answers &bull; Online</p>
         </div>
       </div>
       <div class="header-actions">
@@ -35,19 +31,17 @@ const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_A
             <path d="M3 3v5h5" />
           </svg>
         </button>
-        <button id="close-chat" class="close-btn">✕</button>
+        <button id="close-chat" class="close-btn" aria-label="Close Chat">✕</button>
       </div>
     </div>
 
     <div id="chat-messages" class="chat-messages-area">
-      <div class="msg-row bot">
-        <div class="bubble">Hi 👋 How can I help you with your booth today?</div>
-      </div>
+      <!-- Injected via JavaScript with Welcome & Interactive Quick Chips -->
     </div>
 
     <div class="chat-input-area">
       <div class="input-pill">
-        <input type="text" id="chat-input" placeholder="Type a message..." autocomplete="off" />
+        <input type="text" id="chat-input" placeholder="Type a question (e.g. pricing, rental, location)..." autocomplete="off" />
         <button id="send-chat" class="send-btn" aria-label="Send Message">
           <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
             <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -60,7 +54,7 @@ const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_A
   </div>
 </div>
 
-<script is:inline define:vars={{ apiKey }}>
+<script is:inline>
   function setupChatUI() {
     const bubble = document.getElementById("chat-bubble");
     const windowEl = document.getElementById("chat-window");
@@ -70,14 +64,207 @@ const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_A
     const input = document.getElementById("chat-input");
     const msgContainer = document.getElementById("chat-messages");
 
-    let chatHistory = [];
+    // Quick suggestion topics for instant exploration
+    const quickChips = [
+      { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?" },
+      { label: "🏢 Booth Rentals", query: "Tell me about trade show booth rentals" },
+      { label: "🎨 Custom Exhibits", query: "What custom booth design options do you offer?" },
+      { label: "📍 Location & Hours", query: "Where is your showroom and office located?" },
+      { label: "📅 Book Consultation", query: "How can I book a free booth strategy consultation?" },
+      { label: "🛠️ Installation & Dismantle", query: "Do you handle on-site installation and teardown?" },
+      { label: "📞 Contact Directly", query: "What is your phone number and email address?" },
+    ];
 
-    const initialWelcomeMessage = `<div class="msg-row bot"><div class="bubble">Hi 👋 How can I help you with your booth today?</div></div>`;
+    // Comprehensive Radiant Exhibits Knowledge Base (Zero API Key, Instant Responses)
+    const knowledgeBase = [
+      {
+        id: "greetings",
+        keywords: ["hello", "hi", "hey", "good morning", "good afternoon", "greetings", "howdy", "sup", "yo"],
+        answer: "Hello! 👋 Welcome to Radiant Exhibits, Canada's #1 custom trade show booth specialists. How can I assist you with your upcoming event today?\n\nFeel free to type any question or pick a popular topic below:",
+        showChips: true
+      },
+      {
+        id: "thanks",
+        keywords: ["thank", "thanks", "thank you", "appreciate", "great", "awesome", "perfect", "good job"],
+        answer: "You're very welcome! 😊 Our team is always here to make your exhibiting experience stress-free. Let us know if you need anything else, or give us a call directly at 416-412-0500.",
+        links: [
+          { url: "#contact-details", label: "Send an Inquiry" },
+          { url: "#book-consultation", label: "Book Free Consultation" }
+        ]
+      },
+      {
+        id: "about_company",
+        keywords: ["who are you", "what is radiant exhibits", "about radiant", "about us", "company", "who is radiant"],
+        answer: "Radiant Exhibits is Canada's premier trade show booth builder based in Toronto, Ontario. We offer complete turnkey exhibit solutions across North America—including 3D concept design, in-house custom fabrication, modular systems, turnkey rentals, equipment accessories, and on-site installation/dismantling.",
+        links: [
+          { url: "https://radiantexhibits.com/about-us", label: "About Radiant Exhibits" },
+          { url: "https://radiantexhibits.com/gallery", label: "View Our Portfolio" }
+        ]
+      },
+      {
+        id: "pricing_quotes",
+        keywords: ["price", "pricing", "cost", "how much", "budget", "quote", "quotation", "rate", "rates", "estimate", "expensive", "cheap", "charge"],
+        answer: "Trade show booth pricing depends on your space dimensions (e.g. 10x10, 10x20, 20x20), structure style (custom build vs. modular or rental), finishes, lighting, and venue requirements.\n\nWe provide 100% transparent, itemized quotes with no hidden fees! You can fill out our quick inquiry form above or schedule a free strategy session with an estimator.",
+        links: [
+          { url: "#contact-details", label: "Request a Custom Quote" },
+          { url: "#book-consultation", label: "Schedule Free Consultation" }
+        ]
+      },
+      {
+        id: "rentals",
+        keywords: ["rental", "rent", "renting", "lease", "hire", "temporary", "rental booth", "rent booths"],
+        answer: "Our turnkey rental booth packages are the perfect cost-effective solution for single-show exhibitors or international brands! Packages include structural framework, custom branded graphics, lighting, delivery, on-site assembly, and post-show dismantling.",
+        links: [
+          { url: "https://radiantexhibits.com/category/rental", label: "View Rental Solutions" },
+          { url: "#contact-details", label: "Inquire About Rentals" }
+        ]
+      },
+      {
+        id: "custom_booths",
+        keywords: ["custom", "bespoke", "fabrication", "fabricate", "build", "builder", "construction", "manufacture", "custom booth", "custom exhibits", "island booth", "unique"],
+        answer: "Looking for a standout, 100% bespoke presence? Our in-house engineering and fabrication team creates high-impact custom exhibits from 3D rendering to precision manufacturing with premium woods, metals, fabrics, and dynamic lighting. Perfect for 10x20, 20x20, and larger island exhibits.",
+        links: [
+          { url: "https://radiantexhibits.com/gallery", label: "View Custom Booth Portfolio" },
+          { url: "#contact-details", label: "Request Custom Design" }
+        ]
+      },
+      {
+        id: "modular_displays",
+        keywords: ["modular", "hybrid", "truss", "vector", "reconfigurable", "expandable", "flexible", "modular booth"],
+        answer: "Our modular display systems (Vector, Hybrid, Truss) give your brand ultimate flexibility. The same modular hardware can effortlessly expand or downsize between shows (for instance, converting a 10x20 booth into two 10x10 displays), significantly reducing your annual trade show costs.",
+        links: [
+          { url: "https://radiantexhibits.com/", label: "Explore Modular Systems" },
+          { url: "#contact-details", label: "Ask About Modular Displays" }
+        ]
+      },
+      {
+        id: "portable_displays",
+        keywords: ["portable", "pop up", "popup", "tension fabric", "banner stand", "lightweight", "tabletop", "easy setup", "quick setup", "self setup"],
+        answer: "Need an easy, lightweight display? We supply premium tension fabric backdrops, pop-up displays, and retractable banner stands that set up in minutes with zero tools required. Ideal for 8ft and 10ft spaces or traveling sales teams.",
+        links: [
+          { url: "https://radiantexhibits.com/", label: "View Portable Displays" }
+        ]
+      },
+      {
+        id: "installation_dismantle",
+        keywords: ["installation", "install", "dismantle", "tear down", "teardown", "assembly", "assemble", "setup", "set up", "labor", "union", "i&d", "on-site", "build up"],
+        answer: "We provide complete, certified Installation & Dismantle (I&D) services across North America. Our professional team handles venue freight delivery, structural assembly, electrical/lighting connections, flooring installation, union regulations compliance, and post-event teardown so you can focus entirely on your clients.",
+        links: [
+          { url: "https://radiantexhibits.com/services/installation", label: "Installation Details" },
+          { url: "#contact-details", label: "Book I&D Services" }
+        ]
+      },
+      {
+        id: "design_3d",
+        keywords: ["3d", "rendering", "render", "design", "mockup", "concept", "layout", "visual", "drawings", "graphic design"],
+        answer: "Before anything goes to physical production, our in-house 3D design team crafts ultra-realistic 3D architectural mockups of your booth. You can virtually walk through sightlines, evaluate graphics and lighting placements, and optimize visitor circulation to maximize trade show ROI.",
+        links: [
+          { url: "#book-consultation", label: "Schedule 3D Design Review" }
+        ]
+      },
+      {
+        id: "consultation",
+        keywords: ["consultation", "consult", "book", "appointment", "meeting", "strategy", "schedule", "call", "calendly", "online meeting"],
+        answer: "You can book a complimentary 30-minute online strategy consultation with our senior trade show experts! We cover:\n• Booth Life-Cycle & Timeline Planning\n• Custom 3D Concept & Layout Review\n• Transparent Cost & Budget Breakdown\n• Material Selection & Structural Advice\n• Turnkey Installation Schedules & Visibility Tips",
+        links: [
+          { url: "#book-consultation", label: "Book Consultation on Calendar" }
+        ]
+      },
+      {
+        id: "location_hours",
+        keywords: ["location", "address", "where", "visit", "showroom", "office", "facility", "directions", "map", "hours", "open", "toronto"],
+        answer: "📍 Office & Showroom Location:\n150 Milner Ave, Unit #19, Toronto, ON M1S 3R3, Canada.\n\n🕒 Hours of Operation:\nMonday – Friday: 9:00 AM – 5:30 PM EST.\n\nVisits are welcome to inspect modular frames, lighting, and sample material finishes in person!",
+        links: [
+          { url: "https://maps.google.com/?q=150+Milner+Ave,+Unit+%2319,+Toronto,+ON+M1S+3R3", label: "Open in Google Maps" }
+        ]
+      },
+      {
+        id: "contact_info",
+        keywords: ["contact", "phone", "telephone", "call", "number", "email", "sales", "reach", "talk", "speak", "agent", "human"],
+        answer: "Connect directly with our team:\n• Local (Toronto): 416-412-0500\n• Toll-Free (North America): 1-855-412-0500\n• Direct Email: sales@radiantexhibits.com\n• Facility: 150 Milner Ave, Unit #19, Toronto, ON M1S 3R3\n\nWe respond to all online inquiries within 24 business hours!",
+        links: [
+          { url: "tel:4164120500", label: "Call 416-412-0500" },
+          { url: "mailto:sales@radiantexhibits.com", label: "Send an Email" }
+        ]
+      },
+      {
+        id: "sizes",
+        keywords: ["size", "sizes", "10x10", "10x20", "20x20", "20x30", "30x30", "dimension", "dimensions", "inline", "corner", "island"],
+        answer: "We engineer trade show displays for all footprint sizes:\n• 10x10 Inline Booths: Compact, high-visibility backdrops & counters\n• 10x20 Booths: Extra footprint for product demos & meeting spaces\n• 20x20+ Island Exhibits: 360-degree visibility, high-hanging signs & private conference rooms\n• Custom Sizes: Engineered to your exact booth footprint.",
+        links: [
+          { url: "#contact-details", label: "Get a Size-Specific Quote" }
+        ]
+      },
+      {
+        id: "accessories_lighting",
+        keywords: ["accessories", "lighting", "lightbox", "led", "flooring", "carpet", "furniture", "counter", "kiosk", "screen", "tv", "hologram", "table", "chair"],
+        answer: "We provide complete trade show accessories and equipment rentals:\n• Vibrant LED Backlit Lightboxes\n• Custom Reception Counters & Display Kiosks\n• Hardwood, Vinyl, and Foam Trade Show Flooring\n• AV Video Screens, TV Mounts & Digital Displays\n• Lounge Seating, Barstools, and Meeting Tables",
+        links: [
+          { url: "https://radiantexhibits.com/", label: "Explore Accessories" }
+        ]
+      },
+      {
+        id: "logistics_storage",
+        keywords: ["logistics", "shipping", "freight", "transport", "storage", "warehouse", "store", "dismantle logistics", "crate", "crating"],
+        answer: "We handle the complete physical logistics lifecycle: secure protective crating, coordinated freight to and from the convention hall, customs handling for cross-border events, and safe temperature-controlled warehouse storage between shows.",
+        links: [
+          { url: "https://radiantexhibits.com/services/", label: "View Logistics Services" }
+        ]
+      },
+      {
+        id: "service_areas",
+        keywords: ["area", "areas", "city", "cities", "canada", "usa", "us", "america", "montreal", "vancouver", "vegas", "las vegas", "chicago", "orlando", "venue", "mtcc", "enercare"],
+        answer: "We provide turnkey exhibit services across North America:\n• Canada: Toronto (MTCC, Enercare, International Centre), Montreal, Vancouver, Calgary, Ottawa, Edmonton\n• USA: Las Vegas, Chicago, Orlando, Atlanta, Anaheim, New York, Dallas, Boston, and more.",
+        links: [
+          { url: "#contact-details", label: "Check Your Venue Schedule" }
+        ]
+      },
+      {
+        id: "timeline",
+        keywords: ["timeline", "turnaround", "how long", "lead time", "deadline", "weeks", "rush", "urgent", "fast", "speed"],
+        answer: "Recommended timelines:\n• Custom Builds: 4 to 8 weeks from design sign-off\n• Modular & Rental Booths: 2 to 4 weeks\n• Portable Displays: 1 to 2 weeks\n\nFacing a tight deadline? We frequently handle rush turnarounds—call us at 416-412-0500 to discuss your show dates immediately!",
+        links: [
+          { url: "tel:4164120500", label: "Call for Rush Availability" }
+        ]
+      },
+      {
+        id: "portfolio",
+        keywords: ["portfolio", "gallery", "examples", "photos", "pictures", "past work", "case studies", "previous booths", "past clients"],
+        answer: "We have created award-winning exhibits across healthcare, technology, retail, agriculture, aerospace, and manufacturing sectors. Explore hundreds of real booth photos in our project portfolio!",
+        links: [
+          { url: "https://radiantexhibits.com/gallery", label: "Browse Project Gallery" }
+        ]
+      }
+    ];
 
+    // Build the Initial Welcome Message HTML
+    function getWelcomeHTML() {
+      let chipsHTML = `<div class="chat-chips-container">`;
+      quickChips.forEach((chip) => {
+        chipsHTML += `<button type="button" class="chat-chip-btn" data-query="${chip.query}">${chip.label}</button>`;
+      });
+      chipsHTML += `</div>`;
+
+      return `
+        <div class="msg-row bot">
+          <div class="bubble">Hi 👋 Welcome to <strong>Radiant Exhibits</strong>! How can I help you today? Ask any question or tap a quick topic below:</div>
+          ${chipsHTML}
+        </div>
+      `;
+    }
+
+    // Initialize messages container
+    if (msgContainer) {
+      msgContainer.innerHTML = getWelcomeHTML();
+      bindChipButtons(msgContainer);
+    }
+
+    // Toggle Chat Window
     if (bubble && windowEl) {
       bubble.addEventListener("click", () => {
         windowEl.classList.add("active");
         bubble.classList.add("hidden-bubble");
+        if (input) setTimeout(() => input.focus(), 200);
       });
     }
 
@@ -90,147 +277,166 @@ const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_A
 
     if (clearBtn && msgContainer) {
       clearBtn.addEventListener("click", () => {
-        chatHistory = [];
-        msgContainer.innerHTML = initialWelcomeMessage;
+        msgContainer.innerHTML = getWelcomeHTML();
+        bindChipButtons(msgContainer);
       });
     }
 
-    async function handleSend() {
-      if (!input) return;
-      const text = input.value.trim();
-      if (!text) return;
-
-      renderMessage(text, "user");
-      input.value = "";
-
-      if (!apiKey) {
-        renderMessage("I'm having trouble connecting (API key missing). Please contact us at Sales@radiantexhibits.com or call 416-412-0500.", "bot", false);
-        return;
-      }
-
-      try {
-        const systemInstruction = `
-            You are the "Radiant Assistant," an expert for Radiant Exhibits, Canada's #1 custom trade show booth provider.
-            
-            COMPANY OVERVIEW:
-            - Location: Toronto, Canada (Office: 150 Milner Ave Unit #19, Toronto, ON).
-            - Tagline: #1 Custom Trade Show Booth Exhibits in Canada.
-            - Expertise: End-to-end service including design, installation, and concierge support.
-
-            PRODUCT LIST & RECOMMENDATIONS:
-            1. CUSTOM EXHIBITS: For brands wanting a unique, 100% unique presence. Best for large spaces. [LINK: https://radiantexhibits.com/gallery | View Our Portfolio]
-            2. MODULAR DISPLAYS (Hybrid, Truss, Vector): Flexible layout changes.
-            3. PORTABLE DISPLAYS (Pop-ups, Tension Fabric, Banner Stands): Best for small spaces (8ft/10ft). Most popular is 'Tension Fabric Display'.
-            4. RENTAL SOLUTIONS: Best for companies on a budget. [LINK: https://radiantexhibits.com/category/rental | View Rental Solutions]
-
-            RECOMMENDATION LOGIC:
-            - If user needs speed/easy setup -> Recommend 'Portable Pop-up Displays'.
-            - If user wants a high-end, glowing look -> Recommend 'LED Backlit Lightboxes'.
-            - If user is on a budget -> Recommend 'Rental Booths'.
-
-            REDIRECTION BUTTON RULES:
-            - When users ask about your portfolio, past works, or examples, strictly include: [LINK: https://radiantexhibits.com/gallery | View Portfolio]
-            - When users ask about services or solutions, strictly include: [LINK: https://radiantexhibits.com/ | View Solutions]
-            - When users ask about rental details, strictly include: [LINK: https://radiantexhibits.com/category/rental | View Rental Services]
-            - When users want to find out more details about who you are, use: [LINK: https://radiantexhibits.com/about-us | About Us]
-            Format link references EXACTLY like this layout: [LINK: url | Button Label Text]. Do not write standard markdown links.
-
-            STRICT SCOPE & FALLBACK:
-            - ONLY answer questions related to Radiant Exhibits, trade shows, or booth design.
-            - If a user asks about unrelated topics, say: "That is outside my scope! Please ask me anything related to Radiant Exhibits."
-
-            also never use ** in the response u give
-        `;
-
-        const contents = [
-          ...chatHistory.map((msg) => ({
-            role: msg.role === 'user' ? 'user' : 'model',
-            parts: [{ text: msg.text }]
-          })),
-          {
-            role: 'user',
-            parts: [{ text: text }]
+    // Bind event listeners to chip buttons
+    function bindChipButtons(context) {
+      const chips = context.querySelectorAll(".chat-chip-btn");
+      chips.forEach((chip) => {
+        chip.addEventListener("click", (e) => {
+          e.preventDefault();
+          const query = chip.getAttribute("data-query");
+          if (query) {
+            handleUserQuery(query);
           }
-        ];
-
-        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            system_instruction: {
-              parts: [{ text: systemInstruction }]
-            },
-            contents: contents
-          }),
         });
-
-        const data = await res.json();
-        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm having trouble connecting. Please contact us at Sales@radiantexhibits.com or call 416-412-0500.";
-
-        // Standardizing history payload key format names
-        chatHistory.push({ role: "user", text: text });
-        chatHistory.push({ role: "model", text: reply });
-
-        renderMessage(reply, "bot", true);
-      } catch (err) {
-        console.error("DEBUG - Gemini Error:", err);
-        renderMessage("Sorry, I'm having trouble connecting right now.", "bot", false);
-      }
+      });
     }
 
-    function renderMessage(text, sender, appendCTA = false) {
-      if (!msgContainer) return;
+    // Natural Language Keyword & Intent Matching Algorithm
+    function findBestMatch(userText) {
+      const clean = userText.toLowerCase().replace(/[^\w\s]/g, " ").trim();
+      const words = clean.split(/\s+/).filter(w => w.length > 1);
 
-      const row = document.createElement("div");
-      row.classList.add("msg-row", sender);
+      let bestItem = null;
+      let highestScore = 0;
 
-      const bubbleDiv = document.createElement("div");
-      bubbleDiv.classList.add("bubble");
+      for (const item of knowledgeBase) {
+        let score = 0;
 
-      const linkRegex = /\[LINK:\s*([^|\]]+)\s*\|\s*([^\]]+)\]/g;
-      
-      if (sender === "bot" && linkRegex.test(text)) {
-        let cleanText = text.replace(linkRegex, ""); 
-        bubbleDiv.innerText = cleanText.trim();
-        row.appendChild(bubbleDiv);
-        
-        linkRegex.lastIndex = 0;
-        let match;
-        
-        const actionWrapper = document.createElement("div");
-        actionWrapper.classList.add("chat-action-wrapper");
+        for (const kw of item.keywords) {
+          const kwLower = kw.toLowerCase();
 
-        while ((match = linkRegex.exec(text)) !== null) {
-          const targetUrl = match[1].trim();
-          const btnLabel = match[2].trim();
+          // Exact phrase match bonus
+          if (clean.includes(kwLower)) {
+            score += kwLower.length * 2.5;
+          }
 
-          const linkBtn = document.createElement("a");
-          linkBtn.href = targetUrl;
-          linkBtn.className = "chat-redirect-btn";
-          linkBtn.innerText = btnLabel;
-          actionWrapper.appendChild(linkBtn);
+          // Individual word match
+          for (const word of words) {
+            if (kwLower === word) {
+              score += 10;
+            } else if (kwLower.includes(word) && word.length > 3) {
+              score += 4;
+            }
+          }
         }
-        row.appendChild(actionWrapper);
-      } else {
-        bubbleDiv.innerText = text;
-        row.appendChild(bubbleDiv);
+
+        if (score > highestScore) {
+          highestScore = score;
+          bestItem = item;
+        }
       }
 
-      if (appendCTA) {
-        const ctaText = document.createElement("div");
-        ctaText.classList.add("chat-fallback-info");
-        ctaText.innerHTML = `For further information, Contact Us? Email <a href="mailto:Sales@radiantexhibits.com">Sales@radiantexhibits.com</a> or call <a href="tel:416-412-0500">416-412-0500</a>`;
-        row.appendChild(ctaText);
+      // Minimum confidence threshold
+      if (highestScore >= 6) {
+        return bestItem;
       }
 
+      return null;
+    }
+
+    // User submission handler
+    function handleUserQuery(text) {
+      if (!text || !text.trim()) return;
+      const cleanQuery = text.trim();
+
+      renderUserMessage(cleanQuery);
+
+      if (input) input.value = "";
+
+      // Quick simulated natural typing delay for smooth UX
+      setTimeout(() => {
+        const match = findBestMatch(cleanQuery);
+
+        if (match) {
+          renderBotMessage(match.answer, match.links || [], match.showChips || false);
+        } else {
+          // Polite fallback with direct phone / email and quick topics
+          const fallbackText = "I don't have the exact details on that specific question yet, but our Toronto trade show specialists can answer immediately! Call us at 416-412-0500 or email sales@radiantexhibits.com.\n\nYou can also explore one of our popular topics below:";
+          renderBotMessage(fallbackText, [
+            { url: "tel:4164120500", label: "Call 416-412-0500" },
+            { url: "#contact-details", label: "Send Us an Inquiry" }
+          ], true);
+        }
+      }, 150);
+    }
+
+    function renderUserMessage(text) {
+      if (!msgContainer) return;
+      const row = document.createElement("div");
+      row.className = "msg-row user";
+      row.innerHTML = `<div class="bubble">${escapeHTML(text)}</div>`;
       msgContainer.appendChild(row);
       msgContainer.scrollTop = msgContainer.scrollHeight;
     }
 
-    if (sendBtn) sendBtn.addEventListener("click", handleSend);
+    function renderBotMessage(text, links = [], showChips = false) {
+      if (!msgContainer) return;
+
+      const row = document.createElement("div");
+      row.className = "msg-row bot";
+
+      // Format linebreaks into readable HTML
+      const formattedText = escapeHTML(text).replace(/\n/g, "<br>");
+      let innerHTML = `<div class="bubble">${formattedText}</div>`;
+
+      // Render Action Buttons
+      if (links && links.length > 0) {
+        innerHTML += `<div class="chat-action-wrapper">`;
+        links.forEach((l) => {
+          innerHTML += `<a href="${l.url}" class="chat-redirect-btn">${escapeHTML(l.label)}</a>`;
+        });
+        innerHTML += `</div>`;
+      }
+
+      // Append Chips if requested
+      if (showChips) {
+        innerHTML += `<div class="chat-chips-container">`;
+        quickChips.forEach((chip) => {
+          innerHTML += `<button type="button" class="chat-chip-btn" data-query="${chip.query}">${chip.label}</button>`;
+        });
+        innerHTML += `</div>`;
+      }
+
+      // Support footer info
+      innerHTML += `<div class="chat-fallback-info">Need immediate assistance? Call <a href="tel:416-412-0500">416-412-0500</a> or email <a href="mailto:sales@radiantexhibits.com">sales@radiantexhibits.com</a>.</div>`;
+
+      row.innerHTML = innerHTML;
+      msgContainer.appendChild(row);
+
+      // Rebind chip clicks if any chips were rendered
+      if (showChips) {
+        bindChipButtons(row);
+      }
+
+      msgContainer.scrollTop = msgContainer.scrollHeight;
+    }
+
+    function escapeHTML(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    if (sendBtn) {
+      sendBtn.addEventListener("click", () => {
+        if (input) handleUserQuery(input.value);
+      });
+    }
+
     if (input) {
       input.addEventListener("keypress", (e) => {
-        if (e.key === "Enter") handleSend();
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleUserQuery(input.value);
+        }
       });
     }
   }
@@ -264,7 +470,7 @@ const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_A
     box-shadow: 0 4px 16px rgba(1, 21, 43, 0.25);
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.1);
   }
-  .chat-bubble:hover { transform: scale(1.04); }
+  .chat-bubble:hover { transform: scale(1.06); }
   .hidden-bubble { opacity: 0; transform: scale(0); pointer-events: none; }
   .bubble-pulse {
     position: absolute;
@@ -276,8 +482,8 @@ const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_A
 
   /* WINDOW LAYOUT CONTAINER */
   .chat-window {
-    width: 360px;
-    height: 550px;
+    width: 375px;
+    height: 570px;
     background: #eef4fb;
     border-radius: 20px;
     overflow: hidden;
@@ -290,7 +496,8 @@ const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_A
     visibility: hidden;
     transform: translateY(16px) scale(0.96);
     transition: all 0.25s cubic-bezier(0.075, 0.82, 0.165, 1);
-    box-shadow: 0 8px 32px rgba(15, 23, 42, 0.12);
+    box-shadow: 0 12px 36px rgba(15, 23, 42, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.5);
   }
   .chat-window.active {
     opacity: 1;
@@ -319,7 +526,7 @@ const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_A
     justify-content: center;
     position: relative;
   }
-  .header-left h3 { margin: 0; font-size: 13.5px; font-weight: 600; color: #ffffff; }
+  .header-left h3 { margin: 0; font-size: 13.5px; font-weight: 700; color: #ffffff; }
   .header-left p { margin: 1px 0 0 0; font-size: 11px; color: #6ee7b7; font-weight: 500; }
   .online-dot {
     width: 7px;
@@ -335,7 +542,7 @@ const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_A
   .close-btn, .header-action-btn {
     border: none;
     background: transparent;
-    color: rgba(255,255,255,0.7);
+    color: rgba(255,255,255,0.75);
     width: 28px;
     height: 28px;
     border-radius: 50%;
@@ -345,7 +552,7 @@ const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_A
     justify-content: center;
     transition: background 0.2s, color 0.2s;
   }
-  .close-btn:hover, .header-action-btn:hover { background: rgba(255,255,255,0.15); color: #ffffff; }
+  .close-btn:hover, .header-action-btn:hover { background: rgba(255,255,255,0.18); color: #ffffff; }
 
   /* MESSAGE SCROLL WINDOW */
   .chat-messages-area {
@@ -355,7 +562,7 @@ const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_A
     display: flex;
     flex-direction: column;
     gap: 12px;
-    background: #eef4fb;
+    background: #f1f5f9;
   }
   .chat-messages-area::-webkit-scrollbar { width: 4px; }
   .chat-messages-area::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
@@ -367,43 +574,72 @@ const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_A
     animation: fadeUp 0.2s ease-out forwards;
   }
 
-  /* Bot Row aligns everything to the Left */
   .msg-row.bot { align-items: flex-start; }
-
-  /* User Row aligns everything to the Right */
   .msg-row.user { align-items: flex-end; }
 
-  /* SPEECH BUBBLES - Dynamic Shapes */
+  /* SPEECH BUBBLES */
   .bubble {
     padding: 10px 14px;
     font-size: 13.5px;
     line-height: 1.6;
     word-wrap: break-word;
-    white-space: pre-wrap;
     font-weight: 400;
-    max-width: 75%;
-    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    max-width: 82%;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
   }
 
-  /* Bot left alignment */
   .msg-row.bot .bubble {
-    background: #dbeafe;
-    color: #1e3a5f;
+    background: #ffffff;
+    color: #0f172a;
     border-radius: 16px 16px 16px 4px;
-    border: 1px solid #bfdbfe;
+    border: 1px solid #e2e8f0;
   }
 
-  /* User right alignment (Premium high-contrast blue bubble style) */
   .msg-row.user .bubble {
-    background: linear-gradient(135deg, #2575fc, #1a56c5);
+    background: linear-gradient(135deg, #0284c7, #0369a1);
     color: #ffffff;
     border-radius: 16px 16px 4px 16px;
+    font-weight: 500;
   }
 
-  /* REDIRECT LINKS AND ACTION BUTTONS */
+  /* INTERACTIVE CHIPS */
+  .chat-chips-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 8px;
+    margin-bottom: 2px;
+    max-width: 90%;
+  }
+  .chat-chip-btn {
+    background: #ffffff;
+    color: #0369a1;
+    border: 1px solid #bae6fd;
+    border-radius: 14px;
+    padding: 5px 10px;
+    font-size: 11.5px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+    white-space: nowrap;
+    text-align: left;
+  }
+  .chat-chip-btn:hover {
+    background: #0284c7;
+    color: #ffffff;
+    border-color: #0284c7;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+  }
+  .chat-chip-btn:active {
+    transform: scale(0.96);
+  }
+
+  /* ACTION REDIRECT BUTTONS */
   .chat-action-wrapper {
-    margin-top: 6px;
-    width: 75%; 
+    margin-top: 8px;
+    width: 82%; 
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -411,50 +647,60 @@ const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_A
   .chat-redirect-btn {
     display: block;
     text-align: center;
-    background: #ffffff;
-    color: #1a56c5;
-    border: 1px solid #e2e8f0;
-    padding: 6px 12px;
+    background: #0284c7;
+    color: #ffffff;
+    border: 1px solid #0284c7;
+    padding: 7px 12px;
     font-size: 12.5px;
-    font-weight: 600;
-    border-radius: 8px;
+    font-weight: 700;
+    border-radius: 9px;
     text-decoration: none;
     transition: all 0.2s ease;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+    box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
   }
-  .chat-redirect-btn:hover { background: #f8fafc; border-color: #1a56c5; }
+  .chat-redirect-btn:hover {
+    background: #0369a1;
+    border-color: #0369a1;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(2, 132, 199, 0.3);
+  }
 
-  /* CONTACT INFORMATION SUB-TEXTS */
+  /* SUB-TEXT FOOTER */
   .chat-fallback-info {
-    font-size: 13px;
+    font-size: 12px;
     color: #64748b;
-    margin-top: 4px;
+    margin-top: 6px;
     line-height: 1.4;
-    max-width: 75%;
+    max-width: 82%;
   }
-  .chat-fallback-info a { color: #1a56c5; text-decoration: none; font-weight: 500; }
+  .chat-fallback-info a { color: #0284c7; text-decoration: none; font-weight: 600; }
   .chat-fallback-info a:hover { text-decoration: underline; }
 
   /* ENTRY FOOTER AREA */
   .chat-input-area {
     padding: 10px 14px 14px 14px;
     background: #ffffff;
-    border-top: 1px solid #bfdbfe;
+    border-top: 1px solid #e2e8f0;
   }
   .input-pill {
     display: flex;
     align-items: center;
-    background: #f0f7ff;
+    background: #f8fafc;
     border-radius: 20px;
     padding: 3px 3px 3px 14px;
-    border: 1px solid #bfdbfe;
+    border: 1px solid #cbd5e1;
+  }
+  .input-pill:focus-within {
+    border-color: #0284c7;
+    background: #ffffff;
+    box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
   }
   .input-pill input {
     flex: 1;
     border: none;
     outline: none;
     background: transparent;
-    font-size: 13.5px;
+    font-size: 13px;
     color: #0f172a;
     padding: 6px 0;
   }
@@ -465,20 +711,20 @@ const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_A
     height: 30px;
     border: none;
     border-radius: 50%;
-    background: #06396f;
+    background: #0284c7;
     color: white;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: background 0.2s, transform 0.1s;
+    flex-shrink: 0;
   }
-  .send-btn:hover { background: #01152b; }
+  .send-btn:hover { background: #0369a1; }
   .send-btn:active { transform: scale(0.95); }
 
   /* SYSTEM ANIMATIONS */
   @keyframes pulse { 0% { transform: scale(1); opacity: 0.4; } 70% { transform: scale(1.25); opacity: 0; } 100% { opacity: 0; } }
-  @keyframes floatBubble { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
   /* RESPONSIVE SCALERS */

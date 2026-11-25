@@ -64,6 +64,10 @@
     const input = document.getElementById("chat-input");
     const msgContainer = document.getElementById("chat-messages");
 
+    if (!bubble || !windowEl || !msgContainer) return;
+    if (bubble.dataset.chatInitialized === "true") return;
+    bubble.dataset.chatInitialized = "true";
+
     // Standard Quote URL redirected to the dedicated Contact Us page
     const CONTACT_PAGE_URL = "https://radiantexhibits.com/contact-us/";
 
@@ -77,10 +81,10 @@
           { url: "https://radiantexhibits.com/category/rental/", label: "View 10x10 Rentals" }
         ],
         chips: [
-          { label: "10x20 Dimensions", query: "Tell me about 10x20 booth dimensions" },
-          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
-          { label: "Backlit Lightboxes", query: "What lightbox and illumination options do you offer?" },
-          { label: "Request a Quote", query: "How much does a 10x10 booth cost?" }
+          { label: "💰 Pricing & Quotes", query: "How much does a 10x10 booth cost?", intent: "pricing_quotes" },
+          { label: "10x20 Dimensions", query: "Tell me about 10x20 booth dimensions", intent: "dim_10x20" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" },
+          { label: "Backlit Lightboxes", query: "What lightbox and illumination options do you offer?", intent: "accessories_equipment" }
         ]
       },
 
@@ -91,10 +95,10 @@
           { url: "https://radiantexhibits.com/category/modular-displays/", label: "View 10x20 Modular" }
         ],
         chips: [
-          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?" },
-          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions" },
-          { label: "Modular Displays", query: "What are your modular display options?" },
-          { label: "Book Consultation", query: "How can I book a free consultation?" }
+          { label: "💰 Pricing & Quotes", query: "How much does a 10x20 booth cost?", intent: "pricing_quotes" },
+          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?", intent: "dim_10x10" },
+          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions", intent: "dim_20x20" },
+          { label: "Modular Displays", query: "What are your modular display options?", intent: "modular_displays" }
         ]
       },
 
@@ -105,10 +109,10 @@
           { url: "https://radiantexhibits.com/gallery", label: "View Island Portfolio" }
         ],
         chips: [
-          { label: "Custom Solutions", query: "Tell me about custom trade show booths" },
-          { label: "3D Rendering & Design", query: "What 3D rendering and design services do you offer?" },
-          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
-          { label: "Get a Quote", query: "How much does an island booth cost?" }
+          { label: "💰 Pricing & Quotes", query: "How much does an island booth cost?", intent: "pricing_quotes" },
+          { label: "Custom Solutions", query: "Tell me about custom trade show booths", intent: "custom_solutions" },
+          { label: "3D Rendering & Design", query: "What 3D rendering and design services do you offer?", intent: "service_3d_design" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" }
         ]
       },
 
@@ -119,9 +123,9 @@
           { url: "https://radiantexhibits.com/category/portable-displays/", label: "Browse Tabletop Displays" }
         ],
         chips: [
-          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?" },
-          { label: "Portable Displays", query: "What portable display options do you have?" },
-          { label: "Pricing & Quotes", query: "How much do portable displays cost?" }
+          { label: "💰 Pricing & Quotes", query: "How much do tabletop displays cost?", intent: "pricing_quotes" },
+          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?", intent: "dim_10x10" },
+          { label: "Portable Displays", query: "What portable display options do you have?", intent: "portable_displays" }
         ]
       },
 
@@ -132,9 +136,9 @@
           { url: CONTACT_PAGE_URL, label: "Contact Us About Rigging" }
         ],
         chips: [
-          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions" },
-          { label: "Installation Services", query: "Do you handle booth installation and dismantle?" },
-          { label: "Account Management", query: "Tell me about account management services" }
+          { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?", intent: "pricing_quotes" },
+          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions", intent: "dim_20x20" },
+          { label: "Installation Services", query: "Do you handle booth installation and dismantle?", intent: "service_installation" }
         ]
       },
 
@@ -145,10 +149,10 @@
           { url: "#book-consultation", label: "Schedule Sizing Discovery" }
         ],
         chips: [
-          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?" },
-          { label: "10x20 Dimensions", query: "Tell me about 10x20 booth dimensions" },
-          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions" },
-          { label: "Tabletop Displays", query: "What tabletop display options do you have?" }
+          { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?", intent: "pricing_quotes" },
+          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?", intent: "dim_10x10" },
+          { label: "10x20 Dimensions", query: "Tell me about 10x20 booth dimensions", intent: "dim_10x20" },
+          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions", intent: "dim_20x20" }
         ]
       },
 
@@ -160,10 +164,10 @@
           { url: "https://radiantexhibits.com/customized-solutions/", label: "View Custom Solutions" }
         ],
         chips: [
-          { label: "3D Rendering & Design", query: "What 3D rendering and design services do you offer?" },
-          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions" },
-          { label: "Installation Services", query: "Do you handle booth installation and dismantle?" },
-          { label: "Pricing & Quotes", query: "How much does a custom booth cost?" }
+          { label: "💰 Pricing & Quotes", query: "How much does a custom booth cost?", intent: "pricing_quotes" },
+          { label: "3D Rendering & Design", query: "What 3D rendering and design services do you offer?", intent: "service_3d_design" },
+          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions", intent: "dim_20x20" },
+          { label: "Installation Services", query: "Do you handle booth installation and dismantle?", intent: "service_installation" }
         ]
       },
 
@@ -174,10 +178,10 @@
           { url: "https://radiantexhibits.com/category/modular-displays/", label: "Explore Modular Displays" }
         ],
         chips: [
-          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?" },
-          { label: "10x20 Dimensions", query: "Tell me about 10x20 booth dimensions" },
-          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
-          { label: "Get a Quote", query: "How much do modular displays cost?" }
+          { label: "💰 Pricing & Quotes", query: "How much do modular displays cost?", intent: "pricing_quotes" },
+          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?", intent: "dim_10x10" },
+          { label: "10x20 Dimensions", query: "Tell me about 10x20 booth dimensions", intent: "dim_10x20" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" }
         ]
       },
 
@@ -188,10 +192,10 @@
           { url: "https://radiantexhibits.com/category/rental/", label: "Browse Rental Packages" }
         ],
         chips: [
-          { label: "10x10 Rentals", query: "What are 10x10 rental options?" },
-          { label: "10x20 Rentals", query: "What are 10x20 rental options?" },
-          { label: "Installation Services", query: "Do you handle booth installation and dismantle?" },
-          { label: "Book Consultation", query: "How can I book a free consultation?" }
+          { label: "💰 Pricing & Quotes", query: "How much do booth rentals cost?", intent: "pricing_quotes" },
+          { label: "10x10 Rentals", query: "What are 10x10 rental options?", intent: "dim_10x10" },
+          { label: "10x20 Rentals", query: "What are 10x20 rental options?", intent: "dim_10x20" },
+          { label: "Installation Services", query: "Do you handle booth installation and dismantle?", intent: "service_installation" }
         ]
       },
 
@@ -202,9 +206,9 @@
           { url: "https://radiantexhibits.com/category/portable-displays/", label: "Browse Portable Displays" }
         ],
         chips: [
-          { label: "Tabletop Displays", query: "What tabletop display options do you have?" },
-          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?" },
-          { label: "Pricing & Quotes", query: "How much do portable displays cost?" }
+          { label: "💰 Pricing & Quotes", query: "How much do portable displays cost?", intent: "pricing_quotes" },
+          { label: "Tabletop Displays", query: "What tabletop display options do you have?", intent: "dim_tabletop" },
+          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?", intent: "dim_10x10" }
         ]
       },
 
@@ -216,10 +220,10 @@
           { url: "https://radiantexhibits.com/services/", label: "View All 8 Services" }
         ],
         chips: [
-          { label: "Installation Services", query: "Do you handle booth installation and dismantle?" },
-          { label: "3D Rendering & Design", query: "What 3D rendering and design services do you offer?" },
-          { label: "Logistics & Storage", query: "Tell me about shipping, logistics, and storage" },
-          { label: "Concierge Service", query: "What is your white glove concierge service?" }
+          { label: "💰 Pricing & Quotes", query: "How much do your services cost?", intent: "pricing_quotes" },
+          { label: "Installation Services", query: "Do you handle booth installation and dismantle?", intent: "service_installation" },
+          { label: "3D Rendering & Design", query: "What 3D rendering and design services do you offer?", intent: "service_3d_design" },
+          { label: "Logistics & Storage", query: "Tell me about shipping, logistics, and storage", intent: "service_logistics_storage" }
         ]
       },
 
@@ -230,9 +234,9 @@
           { url: "https://radiantexhibits.com/services/", label: "Installation Details" }
         ],
         chips: [
-          { label: "Logistics & Storage", query: "Tell me about shipping, logistics, and storage" },
-          { label: "Account Management", query: "Tell me about account management services" },
-          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" }
+          { label: "💰 Pricing & Quotes", query: "How much does booth installation cost?", intent: "pricing_quotes" },
+          { label: "Logistics & Storage", query: "Tell me about shipping, logistics, and storage", intent: "service_logistics_storage" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" }
         ]
       },
 
@@ -243,9 +247,10 @@
           { url: "#book-consultation", label: "Book 3D Design Review" }
         ],
         chips: [
-          { label: "Custom Solutions", query: "Tell me about custom trade show booths" },
-          { label: "Modular Displays", query: "What are your modular display options?" },
-          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions" }
+          { label: "💰 Pricing & Quotes", query: "How much does a 3D design and build cost?", intent: "pricing_quotes" },
+          { label: "Custom Solutions", query: "Tell me about custom trade show booths", intent: "custom_solutions" },
+          { label: "Modular Displays", query: "What are your modular display options?", intent: "modular_displays" },
+          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions", intent: "dim_20x20" }
         ]
       },
 
@@ -256,9 +261,10 @@
           { url: "https://radiantexhibits.com/services/", label: "Explore Concierge Services" }
         ],
         chips: [
-          { label: "All Services", query: "What services does Radiant Exhibits offer?" },
-          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
-          { label: "Contact Direct", query: "What is your phone number and email address?" }
+          { label: "💰 Pricing & Quotes", query: "How much does concierge service cost?", intent: "pricing_quotes" },
+          { label: "All Services", query: "What services does Radiant Exhibits offer?", intent: "services_overview" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" },
+          { label: "Contact Direct", query: "What is your phone number and email address?", intent: "contact_info" }
         ]
       },
 
@@ -269,9 +275,9 @@
           { url: "https://radiantexhibits.com/services/", label: "View Storage & Logistics" }
         ],
         chips: [
-          { label: "Installation Services", query: "Do you handle booth installation and dismantle?" },
-          { label: "Toronto Location", query: "Where is your showroom and office located?" },
-          { label: "All Services", query: "What services does Radiant Exhibits offer?" }
+          { label: "💰 Pricing & Quotes", query: "How much does shipping and storage cost?", intent: "pricing_quotes" },
+          { label: "Installation Services", query: "Do you handle booth installation and dismantle?", intent: "service_installation" },
+          { label: "Toronto Location", query: "Where is your showroom and office located?", intent: "location_hours" }
         ]
       },
 
@@ -283,10 +289,10 @@
           { url: "https://radiantexhibits.com/about-us/", label: "About Radiant Exhibits" }
         ],
         chips: [
-          { label: "Toronto Location", query: "Where is your showroom and office located?" },
-          { label: "Contact Info", query: "What is your phone number and email address?" },
-          { label: "Custom Exhibits", query: "Tell me about custom trade show booths" },
-          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" }
+          { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?", intent: "pricing_quotes" },
+          { label: "Toronto Location", query: "Where is your showroom and office located?", intent: "location_hours" },
+          { label: "Contact Info", query: "What is your phone number and email address?", intent: "contact_info" },
+          { label: "Custom Exhibits", query: "Tell me about custom trade show booths", intent: "custom_solutions" }
         ]
       },
 
@@ -297,9 +303,9 @@
           { url: CONTACT_PAGE_URL, label: "Schedule a Showroom Visit" }
         ],
         chips: [
-          { label: "Contact Direct", query: "What is your phone number and email address?" },
-          { label: "Book Consultation", query: "How can I book a free consultation?" },
-          { label: "All Products", query: "What booth options and products do you have?" }
+          { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?", intent: "pricing_quotes" },
+          { label: "Contact Direct", query: "What is your phone number and email address?", intent: "contact_info" },
+          { label: "Book Consultation", query: "How can I book a free consultation?", intent: "consultation_session" }
         ]
       },
 
@@ -310,22 +316,24 @@
           { url: "tel:4164120500", label: "Call 416-412-0500" }
         ],
         chips: [
-          { label: "Pricing & Quotes", query: "How much does a trade show booth cost?" },
-          { label: "Book Consultation", query: "How can I book a free consultation?" },
-          { label: "Toronto Location", query: "Where is your showroom and office located?" }
+          { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?", intent: "pricing_quotes" },
+          { label: "Book Consultation", query: "How can I book a free consultation?", intent: "consultation_session" },
+          { label: "Toronto Location", query: "Where is your showroom and office located?", intent: "location_hours" }
         ]
       },
 
       pricing_quotes: {
-        answer: "• <strong>Itemized Transparency:</strong> We provide custom quotes with zero hidden venue or union surprises.\n• <strong>Portable Displays:</strong> Accessible, budget-friendly packages starting at economical price points.\n• <strong>Turnkey Rentals:</strong> Save 30% to 50% vs purchasing new, with all I&D and logistics included.\n• <strong>Custom Exhibits:</strong> Tailored to your multi-year marketing budget with 100% bespoke fabrication.\n• <strong>Free Estimates:</strong> Click below to visit our Contact Us page and get a fast, tailored quote!",
+        answer: "• <strong>Transparent Pricing:</strong> We provide itemized, all-inclusive quotes with zero hidden venue or union surprises.\n• <strong>Portable Solutions:</strong> Budget-friendly pop-ups & banner packages starting from accessible entry price points.\n• <strong>Turnkey Rentals:</strong> Save 30%–50% vs buying new—includes hardware, custom printed graphics & coordination.\n• <strong>Custom Exhibits:</strong> Engineered to your multi-year marketing budget with 100% bespoke fabrication & 3D designs.\n• <strong>Fast Turnaround:</strong> Inquire below to receive a detailed cost breakdown and 3D concept within 24 business hours!",
         links: [
-          { url: CONTACT_PAGE_URL, label: "Get a Quote (Contact Us)" },
-          { url: "#book-consultation", label: "Schedule Free Consultation" }
+          { url: CONTACT_PAGE_URL, label: "Get an Itemized Quote (Contact Us)" },
+          { url: "#book-consultation", label: "Schedule Free Cost Consultation" },
+          { url: "tel:4164120500", label: "Call 416-412-0500 for Fast Estimate" }
         ],
         chips: [
-          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?" },
-          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
-          { label: "Custom Solutions", query: "Tell me about custom trade show booths" }
+          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?", intent: "dim_10x10" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" },
+          { label: "Custom Solutions", query: "Tell me about custom trade show booths", intent: "custom_solutions" },
+          { label: "📅 Book Consultation", query: "How can I book a free booth consultation?", intent: "consultation_session" }
         ]
       },
 
@@ -336,9 +344,9 @@
           { url: CONTACT_PAGE_URL, label: "Send an Inquiry Instead" }
         ],
         chips: [
-          { label: "Pricing & Quotes", query: "How much does a trade show booth cost?" },
-          { label: "Custom Solutions", query: "Tell me about custom trade show booths" },
-          { label: "Booth Dimensions", query: "What booth dimensions and sizes do you offer?" }
+          { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?", intent: "pricing_quotes" },
+          { label: "Custom Solutions", query: "Tell me about custom trade show booths", intent: "custom_solutions" },
+          { label: "Booth Dimensions", query: "What booth dimensions and sizes do you offer?", intent: "dim_general" }
         ]
       },
 
@@ -349,9 +357,9 @@
           { url: CONTACT_PAGE_URL, label: "Get a Quote for Similar Booth" }
         ],
         chips: [
-          { label: "Custom Solutions", query: "Tell me about custom trade show booths" },
-          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
-          { label: "Get a Quote", query: "How much does a booth cost?" }
+          { label: "💰 Pricing & Quotes", query: "How much does a booth cost?", intent: "pricing_quotes" },
+          { label: "Custom Solutions", query: "Tell me about custom trade show booths", intent: "custom_solutions" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" }
         ]
       },
 
@@ -362,9 +370,9 @@
           { url: CONTACT_PAGE_URL, label: "Submit Rush Quote Request" }
         ],
         chips: [
-          { label: "Pricing & Quotes", query: "How much does a trade show booth cost?" },
-          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
-          { label: "Contact Info", query: "What is your phone number and email address?" }
+          { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?", intent: "pricing_quotes" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" },
+          { label: "Contact Info", query: "What is your phone number and email address?", intent: "contact_info" }
         ]
       },
 
@@ -375,9 +383,9 @@
           { url: "https://radiantexhibits.com/", label: "View Accessories" }
         ],
         chips: [
-          { label: "Custom Solutions", query: "Tell me about custom trade show booths" },
-          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
-          { label: "Pricing & Quotes", query: "How much do accessories cost?" }
+          { label: "💰 Pricing & Quotes", query: "How much do accessories cost?", intent: "pricing_quotes" },
+          { label: "Custom Solutions", query: "Tell me about custom trade show booths", intent: "custom_solutions" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" }
         ]
       },
 
@@ -387,9 +395,9 @@
           { url: CONTACT_PAGE_URL, label: "Check Venue Availability" }
         ],
         chips: [
-          { label: "Installation Services", query: "Do you handle booth installation and dismantle?" },
-          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
-          { label: "Toronto Location", query: "Where is your showroom and office located?" }
+          { label: "💰 Pricing & Quotes", query: "How much does a booth cost?", intent: "pricing_quotes" },
+          { label: "Installation Services", query: "Do you handle booth installation and dismantle?", intent: "service_installation" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" }
         ]
       },
 
@@ -399,9 +407,9 @@
           { url: CONTACT_PAGE_URL, label: "Get a Quote" }
         ],
         chips: [
-          { label: "📐 Booth Dimensions", query: "What booth dimensions and sizes do you offer?" },
-          { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?" },
-          { label: "🏢 Turnkey Rentals", query: "Tell me about trade show booth rentals" }
+          { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?", intent: "pricing_quotes" },
+          { label: "📐 Booth Dimensions", query: "What booth dimensions and sizes do you offer?", intent: "dim_general" },
+          { label: "🏢 Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" }
         ]
       },
 
@@ -412,9 +420,9 @@
           { url: "#book-consultation", label: "Schedule Free Consultation" }
         ],
         chips: [
-          { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?" },
-          { label: "📐 Booth Dimensions", query: "What booth dimensions and sizes do you offer?" },
-          { label: "🏢 Turnkey Rentals", query: "Tell me about trade show booth rentals" }
+          { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?", intent: "pricing_quotes" },
+          { label: "📐 Booth Dimensions", query: "What booth dimensions and sizes do you offer?", intent: "dim_general" },
+          { label: "🏢 Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" }
         ]
       }
     };
@@ -429,82 +437,113 @@
     }
 
     // Initialize messages container with clean welcome
-    if (msgContainer) {
-      msgContainer.innerHTML = getWelcomeHTML();
-    }
+    msgContainer.innerHTML = getWelcomeHTML();
 
     // Toggle Chat Window
-    if (bubble && windowEl) {
-      bubble.addEventListener("click", () => {
-        windowEl.classList.add("active");
-        bubble.classList.add("hidden-bubble");
-        if (input) setTimeout(() => input.focus(), 200);
-      });
-    }
+    bubble.addEventListener("click", () => {
+      windowEl.classList.add("active");
+      bubble.classList.add("hidden-bubble");
+      if (input) setTimeout(() => input.focus(), 200);
+    });
 
-    if (closeBtn && windowEl && bubble) {
+    if (closeBtn) {
       closeBtn.addEventListener("click", () => {
         windowEl.classList.remove("active");
         bubble.classList.remove("hidden-bubble");
       });
     }
 
-    if (clearBtn && msgContainer) {
+    if (clearBtn) {
       clearBtn.addEventListener("click", () => {
         msgContainer.innerHTML = getWelcomeHTML();
       });
     }
 
-    // Bind event listeners to chip buttons
-    function bindChipButtons(context) {
-      const chips = context.querySelectorAll(".chat-chip-btn");
-      chips.forEach((chip) => {
-        chip.addEventListener("click", (e) => {
-          e.preventDefault();
-          const query = chip.getAttribute("data-query");
-          if (query) {
-            handleUserQuery(query);
+    // Delegated click handler on msgContainer: handles ALL interactive chips & redirect buttons reliably
+    msgContainer.addEventListener("click", (e) => {
+      // 1. Handle Chip Button Click
+      const chip = e.target.closest(".chat-chip-btn");
+      if (chip) {
+        e.preventDefault();
+        const intent = chip.getAttribute("data-intent");
+        const query = chip.getAttribute("data-query") || chip.textContent.trim();
+        handleUserQuery(query, intent);
+        return;
+      }
+
+      // 2. Handle Action Redirect Button Click
+      const actionBtn = e.target.closest(".chat-redirect-btn");
+      if (actionBtn) {
+        const href = actionBtn.getAttribute("href");
+        if (!href) return;
+
+        // If it targets an internal anchor or contact page on the current site
+        if (href.startsWith("#") || href === CONTACT_PAGE_URL || href.includes("/contact-us")) {
+          let targetId = "contact-details";
+          if (href.includes("consultation") || href === "#book-consultation") {
+            targetId = "book-consultation";
           }
-        });
-      });
-    }
+          const targetEl = document.getElementById(targetId) || document.getElementById("contact-details") || document.getElementById("inquiry-form");
+          if (targetEl) {
+            e.preventDefault();
+            targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+            const firstInput = targetEl.querySelector("input:not([type=hidden]), textarea");
+            if (firstInput) {
+              setTimeout(() => firstInput.focus(), 600);
+            }
+            // On mobile viewports, minimize chatbot so user immediately sees the target section
+            if (window.innerWidth < 768 && windowEl && bubble) {
+              windowEl.classList.remove("active");
+              bubble.classList.remove("hidden-bubble");
+            }
+            return;
+          }
+        }
+      }
+    });
 
     // Comprehensive NLP & Intent Matching Algorithm
     function findBestMatch(userText) {
       const clean = userText.toLowerCase().trim();
 
-      // 1. SPECIFIC DIMENSION CHECKS (Highest Priority)
+      // 1. COMMERCIAL, PRICING & QUOTES (Always prioritize pricing when user asks about cost/quote)
+      if (/\b(?:price|pricing|costs?|how\s*much|budget|quotes?|quotation|rates?|estimate|get\s*a?\s*quote|request\s*a?\s*quote)\b/.test(clean)) return 'pricing_quotes';
+
+      // 2. CONSULTATION & SCHEDULING
+      if (/\b(?:book|consultation|schedule|appointment|meeting|strategy\s*call|calendly)\b/.test(clean)) return 'consultation_session';
+
+      // 3. SPECIFIC BOOTH DIMENSIONS & SIZES
       if (/\b10\s*(?:x|by|\*)\s*10\b|100\s*sq|10\s*ft\s*booth\b/.test(clean)) return 'dim_10x10';
       if (/\b10\s*(?:x|by|\*)\s*20\b|200\s*sq|20\s*ft\s*booth\b/.test(clean)) return 'dim_10x20';
       if (/\b20\s*(?:x|by|\*)\s*20\b|400\s*sq|\bisland\b/.test(clean)) return 'dim_20x20';
       if (/\b(?:table\s*top|tabletop|6ft|8ft\s*table|pull\s*up|banner\s*stand|retractable)\b/.test(clean)) return 'dim_tabletop';
       if (/\b(?:height|how\s*tall|hanging\s*sign|rigging|ceiling|perimeter)\b/.test(clean)) return 'dim_height';
-      if (/\b(?:dimension|dimensions|sizes?|footprint|footprints|measurements?)\b/.test(clean)) return 'dim_general';
+      if (/\b(?:dimension|dimensions|sizes?|footprint|footprints|measurements?|how\s*big)\b/.test(clean)) return 'dim_general';
 
-      // 2. CONVERSATIONAL INTENTS
-      if (/^(?:hi|hello|hey|good\s*morning|good\s*afternoon|good\s*evening)\b/.test(clean)) return 'greetings';
+      // 4. CONVERSATIONAL & ABOUT INTENTS
+      if (/^(?:hi|hello|hey|good\s*morning|good\s*afternoon|good\s*evening|greetings)\b/.test(clean)) return 'greetings';
       if (/\b(?:thank|thanks|appreciate|awesome|perfect|great\s*job)\b/.test(clean)) return 'thanks';
-      if (/\b(?:who\s*(?:are\s*you|is\s*radiant)|about\s*(?:us|radiant|company))\b/.test(clean)) return 'about_radiant';
+      if (/\b(?:who\s*(?:are\s*you|is\s*radiant)|about\s*(?:us|radiant|company)|experience|history|background)\b/.test(clean)) return 'about_radiant';
 
-      // 3. PRODUCT CATEGORIES (Based on site links)
+      // 5. LOCATION, HOURS & CONTACT DIRECT
+      if (/\b(?:location|address|where|showroom|visit|facility|milner|hours|open|when\s*open|toronto|scarborough)\b/.test(clean)) return 'location_hours';
+      if (/\b(?:contact|phone|telephone|call|number|email|sales|reach|speak|talk)\b/.test(clean)) return 'contact_info';
+
+      // 6. PRODUCT CATEGORIES (Based on site links)
       if (/\b(?:rent|rental|rentals|renting|lease|hire)\b/.test(clean)) return 'rental_booths';
       if (/\b(?:custom|customized|bespoke|fabrication|fabricate|wood|metal|graphic-oriented|product-oriented)\b/.test(clean)) return 'custom_solutions';
       if (/\b(?:modular|hybrid|truss|vector|reconfigurable|extrusions?)\b/.test(clean)) return 'modular_displays';
       if (/\b(?:portable|pop\s*up|popup|tension\s*fabric|stretch\s*fabric|lightweight)\b/.test(clean)) return 'portable_displays';
       if (/\b(?:accessories|lighting|light\s*box|lightbox|flooring|carpet|furniture|counters?|kiosks?|screens?|tv|monitors?|holograms?)\b/.test(clean)) return 'accessories_equipment';
 
-      // 4. SERVICES CATEGORIES (Based on /services/)
+      // 7. SERVICES CATEGORIES (Based on /services/)
       if (/\b(?:install|installation|dismantle|teardown|assembly|assemble|labor|i&d|union)\b/.test(clean)) return 'service_installation';
       if (/\b(?:3d|render|rendering|renderings|cad|mockup|mockups|layout|drawings?)\b/.test(clean)) return 'service_3d_design';
       if (/\b(?:concierge|white\s*glove|hotel|shuttle|catering|hospitality|booth\s*staff)\b/.test(clean)) return 'service_concierge';
       if (/\b(?:logistics|freight|shipping|storage|warehouse|store|crates?|crating)\b/.test(clean)) return 'service_logistics_storage';
       if (/\b(?:services?|what\s*do\s*you\s*do|solutions?)\b/.test(clean)) return 'services_overview';
 
-      // 5. COMMERCIAL & CONTACT INTENTS (Get a Quote, Pricing, Contact)
-      if (/\b(?:price|pricing|costs?|how\s*much|budget|quotes?|quotation|rates?|estimate|get\s*quote|request\s*quote)\b/.test(clean)) return 'pricing_quotes';
-      if (/\b(?:book|consultation|schedule|appointment|meeting|strategy\s*call|calendly)\b/.test(clean)) return 'consultation_session';
-      if (/\b(?:location|address|where|showroom|visit|facility|milner|hours|open|when\s*open|toronto)\b/.test(clean)) return 'location_hours';
-      if (/\b(?:contact|phone|telephone|call|number|email|sales|reach|speak|talk)\b/.test(clean)) return 'contact_info';
+      // 8. OTHER INQUIRIES (Portfolio, Timeline, Venues)
       if (/\b(?:portfolio|gallery|photos?|pictures?|past\s*work|previous|clients?|examples?)\b/.test(clean)) return 'portfolio_gallery';
       if (/\b(?:timeline|turnaround|how\s*long|lead\s*time|rush|urgent|deadline|weeks?)\b/.test(clean)) return 'timeline_turnaround';
       if (/\b(?:venues?|cities|city|locations?|convention|centre|center|mtcc|enercare|vegas|las\s*vegas|chicago|orlando|montreal|vancouver)\b/.test(clean)) return 'venues_locations';
@@ -535,21 +574,23 @@
       if (el) el.remove();
     }
 
-    // User query submission handler with typing animation
-    function handleUserQuery(text) {
+    // User query submission handler with typing animation and explicit intent support
+    let typingTimer = null;
+    function handleUserQuery(text, explicitIntent = null) {
       if (!text || !text.trim()) return;
       const cleanQuery = text.trim();
 
       renderUserMessage(cleanQuery);
       if (input) input.value = "";
 
-      // Display realistic typing animation before responding
+      if (typingTimer) clearTimeout(typingTimer);
       showTypingIndicator();
 
-      setTimeout(() => {
+      typingTimer = setTimeout(() => {
         removeTypingIndicator();
+        typingTimer = null;
 
-        const matchId = findBestMatch(cleanQuery);
+        const matchId = (explicitIntent && knowledgeBase[explicitIntent]) ? explicitIntent : findBestMatch(cleanQuery);
         const data = matchId ? knowledgeBase[matchId] : null;
 
         if (data) {
@@ -562,13 +603,13 @@
             { url: CONTACT_PAGE_URL, label: "Get a Quote (Contact Us)" },
             { url: "tel:4164120500", label: "Call 416-412-0500" }
           ], [
-            { label: "📐 Booth Dimensions", query: "What booth dimensions and sizes do you offer?" },
-            { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?" },
-            { label: "🏢 Turnkey Rentals", query: "Tell me about trade show booth rentals" },
-            { label: "🎨 Custom Exhibits", query: "What custom booth design options do you offer?" }
+            { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?", intent: "pricing_quotes" },
+            { label: "📐 Booth Dimensions", query: "What booth dimensions and sizes do you offer?", intent: "dim_general" },
+            { label: "🏢 Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" },
+            { label: "🎨 Custom Exhibits", query: "What custom booth design options do you offer?", intent: "custom_solutions" }
           ]);
         }
-      }, 550);
+      }, 450);
     }
 
     function renderUserMessage(text) {
@@ -594,16 +635,19 @@
       if (links && links.length > 0) {
         innerHTML += `<div class="chat-action-wrapper">`;
         links.forEach((l) => {
-          innerHTML += `<a href="${l.url}" class="chat-redirect-btn">${escapeHTML(l.label)}</a>`;
+          const isExternal = l.url.startsWith("http") && !l.url.includes("contact-us");
+          const targetAttr = isExternal ? 'target="_blank" rel="noopener noreferrer"' : '';
+          innerHTML += `<a href="${l.url}" class="chat-redirect-btn" ${targetAttr}>${escapeHTML(l.label)}</a>`;
         });
         innerHTML += `</div>`;
       }
 
-      // Render Suggested Follow-up Chips
+      // Render Suggested Follow-up Chips with explicit intent attributes
       if (chips && chips.length > 0) {
         innerHTML += `<div class="chat-chips-container">`;
         chips.forEach((c) => {
-          innerHTML += `<button type="button" class="chat-chip-btn" data-query="${escapeHTML(c.query)}">${escapeHTML(c.label)}</button>`;
+          const intentAttr = c.intent ? `data-intent="${escapeHTML(c.intent)}"` : '';
+          innerHTML += `<button type="button" class="chat-chip-btn" ${intentAttr} data-query="${escapeHTML(c.query)}">${escapeHTML(c.label)}</button>`;
         });
         innerHTML += `</div>`;
       }
@@ -613,12 +657,6 @@
 
       row.innerHTML = innerHTML;
       msgContainer.appendChild(row);
-
-      // Bind click handlers to newly added follow-up chips
-      if (chips && chips.length > 0) {
-        bindChipButtons(row);
-      }
-
       msgContainer.scrollTop = msgContainer.scrollHeight;
     }
 
@@ -668,83 +706,126 @@
     border: none;
     cursor: pointer;
     background: linear-gradient(135deg, #01152b, #06396f);
-    color: white;
+    color: #ffffff;
+    box-shadow: 0 8px 24px -4px rgba(1, 21, 43, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.15) inset;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    box-shadow: 0 4px 16px rgba(1, 21, 43, 0.25);
-    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
   }
-  .chat-bubble:hover { transform: scale(1.06); }
-  .hidden-bubble { opacity: 0; transform: scale(0); pointer-events: none; }
+
+  .chat-bubble:hover {
+    transform: scale(1.08) translateY(-2px);
+    box-shadow: 0 12px 28px -4px rgba(1, 21, 43, 0.55);
+  }
+
+  .chat-bubble.hidden-bubble {
+    display: none !important;
+  }
+
   .bubble-pulse {
     position: absolute;
-    inset: 0;
+    inset: -3px;
     border-radius: 50%;
-    background: rgba(41, 151, 201, 0.2);
-    animation: pulse 2.5s infinite;
+    border: 2px solid #38bdf8;
+    opacity: 0;
+    animation: ripplePulse 3s infinite;
   }
 
-  /* WINDOW LAYOUT CONTAINER */
+  @keyframes ripplePulse {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.15); opacity: 0; }
+    100% { transform: scale(0.95); opacity: 0; }
+  }
+
+  /* CHAT DIALOG WINDOW */
   .chat-window {
+    display: none;
+    position: fixed;
+    right: 52px;
+    bottom: 30px;
     width: 380px;
     height: 580px;
-    background: #eef4fb;
+    max-height: calc(100vh - 80px);
+    background: #ffffff;
     border-radius: 20px;
-    overflow: hidden;
-    display: flex;
+    box-shadow: 0 20px 40px -8px rgba(1, 21, 43, 0.28), 0 0 0 1px rgba(0, 0, 0, 0.06);
     flex-direction: column;
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(16px) scale(0.96);
-    transition: all 0.25s cubic-bezier(0.075, 0.82, 0.165, 1);
-    box-shadow: 0 12px 36px rgba(15, 23, 42, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.6);
-  }
-  .chat-window.active {
-    opacity: 1;
-    visibility: visible;
-    transform: translateY(0) scale(1);
+    overflow: hidden;
+    z-index: 100000;
   }
 
-  /* HEADER ELEMENT UI */
-  .chat-header {
-    background: linear-gradient(135deg, #01152b, #06396f);
-    padding: 12px 16px;
+  .chat-window.active {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: none;
+    animation: chatSlideIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   }
-  .header-left { display: flex; align-items: center; gap: 10px; }
-  .avatar-container {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.15);
+
+  @keyframes chatSlideIn {
+    from { opacity: 0; transform: translateY(16px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* HEADER */
+  .chat-header {
+    background: linear-gradient(135deg, #01152b, #052c54);
     color: #ffffff;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .avatar-container {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.12);
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
+    color: #38bdf8;
   }
-  .header-left h3 { margin: 0; font-size: 13.5px; font-weight: 700; color: #ffffff; }
-  .header-left p { margin: 1px 0 0 0; font-size: 11px; color: #6ee7b7; font-weight: 500; }
+
   .online-dot {
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
+    width: 9px;
+    height: 9px;
     background: #10b981;
+    border-radius: 50%;
     position: absolute;
-    bottom: 0;
-    right: 0;
-    border: 1.5px solid white;
+    bottom: 0px;
+    right: 0px;
+    border: 2px solid #01152b;
   }
-  .header-actions { display: flex; align-items: center; gap: 4px; }
+
+  .chat-header h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    color: #ffffff;
+  }
+
+  .chat-header p {
+    margin: 2px 0 0 0;
+    font-size: 11px;
+    color: #94a3b8;
+  }
+
+  .header-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
   .close-btn, .header-action-btn {
     border: none;
     background: transparent;
@@ -899,6 +980,7 @@
     font-weight: 700;
     border-radius: 9px;
     text-decoration: none;
+    cursor: pointer;
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(2, 132, 199, 0.2);
   }
@@ -930,14 +1012,15 @@
     display: flex;
     align-items: center;
     background: #f8fafc;
-    border-radius: 20px;
-    padding: 3px 3px 3px 14px;
     border: 1px solid #cbd5e1;
+    border-radius: 24px;
+    padding: 3px 4px 3px 14px;
+    transition: border-color 0.2s, box-shadow 0.2s;
   }
   .input-pill:focus-within {
     border-color: #0284c7;
+    box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15);
     background: #ffffff;
-    box-shadow: 0 0 0 2px rgba(2, 132, 199, 0.15);
   }
   .input-pill input {
     flex: 1;
@@ -946,34 +1029,36 @@
     background: transparent;
     font-size: 13px;
     color: #0f172a;
-    padding: 6px 0;
   }
   .input-pill input::placeholder { color: #94a3b8; }
-  
   .send-btn {
-    width: 30px;
-    height: 30px;
-    border: none;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
+    border: none;
     background: #0284c7;
-    color: white;
-    cursor: pointer;
+    color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.2s, transform 0.1s;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
     flex-shrink: 0;
   }
-  .send-btn:hover { background: #0369a1; }
-  .send-btn:active { transform: scale(0.95); }
+  .send-btn:hover { background: #0369a1; transform: scale(1.05); }
 
-  /* SYSTEM ANIMATIONS */
-  @keyframes pulse { 0% { transform: scale(1); opacity: 0.4; } 70% { transform: scale(1.25); opacity: 0; } 100% { opacity: 0; } }
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-  /* RESPONSIVE SCALERS */
-  @media (max-width: 640px) {
-    .chatbot-wrapper { right: 18px; bottom: 16px; }
-    .chat-window { width: calc(100vw - 24px); height: 82vh; border-radius: 16px; }
+  @media (max-width: 480px) {
+    .chatbot-wrapper { right: 16px; bottom: 16px; }
+    .chat-window {
+      right: 16px;
+      bottom: 16px;
+      width: calc(100vw - 32px);
+      height: calc(100vh - 100px);
+    }
   }
 </style>

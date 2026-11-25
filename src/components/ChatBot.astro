@@ -41,7 +41,7 @@
 
     <div class="chat-input-area">
       <div class="input-pill">
-        <input type="text" id="chat-input" placeholder="Type a question (e.g. pricing, rental, location)..." autocomplete="off" />
+        <input type="text" id="chat-input" placeholder="Ask about dimensions, rentals, pricing..." autocomplete="off" />
         <button id="send-chat" class="send-btn" aria-label="Send Message">
           <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
             <line x1="22" y1="2" x2="11" y2="13"></line>
@@ -64,190 +64,367 @@
     const input = document.getElementById("chat-input");
     const msgContainer = document.getElementById("chat-messages");
 
-    // Quick suggestion topics for instant exploration
-    const quickChips = [
+    // Initial Primary Quick Chips
+    const initialChips = [
+      { label: "📐 Booth Dimensions", query: "What booth dimensions and sizes do you offer?" },
       { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?" },
-      { label: "🏢 Booth Rentals", query: "Tell me about trade show booth rentals" },
+      { label: "🏢 Turnkey Rentals", query: "Tell me about trade show booth rentals" },
       { label: "🎨 Custom Exhibits", query: "What custom booth design options do you offer?" },
-      { label: "📍 Location & Hours", query: "Where is your showroom and office located?" },
-      { label: "📅 Book Consultation", query: "How can I book a free booth strategy consultation?" },
-      { label: "🛠️ Installation & Dismantle", query: "Do you handle on-site installation and teardown?" },
-      { label: "📞 Contact Directly", query: "What is your phone number and email address?" },
+      { label: "🧩 Modular Displays", query: "What are your modular display options?" },
+      { label: "🛠️ I&D Services", query: "Do you handle booth installation and dismantle?" },
+      { label: "📍 Toronto Showroom", query: "Where is your showroom and office located?" },
+      { label: "📅 Book Consultation", query: "How can I book a free booth consultation?" },
     ];
 
-    // Comprehensive Radiant Exhibits Knowledge Base (Zero API Key, Instant Responses)
-    const knowledgeBase = [
-      {
-        id: "greetings",
-        keywords: ["hello", "hi", "hey", "good morning", "good afternoon", "greetings", "howdy", "sup", "yo"],
-        answer: "Hello! 👋 Welcome to Radiant Exhibits, Canada's #1 custom trade show booth specialists. How can I assist you with your upcoming event today?\n\nFeel free to type any question or pick a popular topic below:",
-        showChips: true
-      },
-      {
-        id: "thanks",
-        keywords: ["thank", "thanks", "thank you", "appreciate", "great", "awesome", "perfect", "good job"],
-        answer: "You're very welcome! 😊 Our team is always here to make your exhibiting experience stress-free. Let us know if you need anything else, or give us a call directly at 416-412-0500.",
+    // Comprehensive Radiant Exhibits Knowledge Base (Exact 4-5 line responses, accurate & informative)
+    const knowledgeBase = {
+      // 1. DIMENSION CATEGORIES (Specific sizes & rules)
+      dim_10x10: {
+        answer: "• <strong>Dimensions:</strong> 10ft × 10ft (3.05m × 3.05m / 100 sq ft) standard linear footprint.\n• <strong>Height Limit:</strong> 8ft (2.44m) max backwall height with 3ft side divider walls.\n• <strong>What Fits:</strong> Branded backwall, reception counter, literature rack & TV display.\n• <strong>Radiant Solutions:</strong> Tension fabric, backlit lightboxes, modular frames & rentals.\n• <strong>Lead Time:</strong> 1–2 weeks for portable, 2–4 weeks for rental/modular, 4–6 weeks for custom.",
         links: [
-          { url: "#contact-details", label: "Send an Inquiry" },
-          { url: "#book-consultation", label: "Book Free Consultation" }
+          { url: "https://radiantexhibits.com/category/rental/", label: "View 10x10 Rentals" },
+          { url: "#contact-details", label: "Get 10x10 Quote" }
+        ],
+        chips: [
+          { label: "10x20 Dimensions", query: "Tell me about 10x20 booth dimensions" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
+          { label: "Backlit Lightboxes", query: "What lightbox and illumination options do you offer?" },
+          { label: "Request a Quote", query: "How much does a 10x10 booth cost?" }
         ]
       },
-      {
-        id: "about_company",
-        keywords: ["who are you", "what is radiant exhibits", "about radiant", "about us", "company", "who is radiant"],
-        answer: "Radiant Exhibits is Canada's premier trade show booth builder based in Toronto, Ontario. We offer complete turnkey exhibit solutions across North America—including 3D concept design, in-house custom fabrication, modular systems, turnkey rentals, equipment accessories, and on-site installation/dismantling.",
+
+      dim_10x20: {
+        answer: "• <strong>Dimensions:</strong> 10ft × 20ft (3.05m × 6.1m / 200 sq ft) double-wide linear footprint.\n• <strong>Height Limit:</strong> 8ft max backwall (or up to 12ft on venue perimeter walls).\n• <strong>What Fits:</strong> Dedicated product demo zones, meeting lounges & reception counters.\n• <strong>Modular Bonus:</strong> Can be engineered to split into two independent 10x10s for other expos!\n• <strong>Radiant Solutions:</strong> Custom graphic/product builds, hybrid modular kits & rentals.",
         links: [
-          { url: "https://radiantexhibits.com/about-us", label: "About Radiant Exhibits" },
-          { url: "https://radiantexhibits.com/gallery", label: "View Our Portfolio" }
+          { url: "https://radiantexhibits.com/category/modular-displays/", label: "View 10x20 Modular" },
+          { url: "#contact-details", label: "Get 10x20 Quote" }
+        ],
+        chips: [
+          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?" },
+          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions" },
+          { label: "Modular Displays", query: "What are your modular display options?" },
+          { label: "Book Consultation", query: "How can I book a free consultation?" }
         ]
       },
-      {
-        id: "pricing_quotes",
-        keywords: ["price", "pricing", "cost", "how much", "budget", "quote", "quotation", "rate", "rates", "estimate", "expensive", "cheap", "charge"],
-        answer: "Trade show booth pricing depends on your space dimensions (e.g. 10x10, 10x20, 20x20), structure style (custom build vs. modular or rental), finishes, lighting, and venue requirements.\n\nWe provide 100% transparent, itemized quotes with no hidden fees! You can fill out our quick inquiry form above or schedule a free strategy session with an estimator.",
+
+      dim_20x20: {
+        answer: "• <strong>Dimensions:</strong> 20ft × 20ft (6.1m × 6.1m / 400 sq ft) open 4-sided island exhibit.\n• <strong>Height Limit:</strong> Up to 16ft–20ft+ vertical allowance for hanging signs & truss rigging.\n• <strong>What Fits:</strong> Private conference room, lockable storage, demo pods & LED video wall.\n• <strong>360° Exposure:</strong> Zero neighbor walls; captures high-volume attendee traffic from all aisles.\n• <strong>Radiant Solutions:</strong> Custom architectural fabrication, hybrid modular & turnkey rentals.",
         links: [
-          { url: "#contact-details", label: "Request a Custom Quote" },
-          { url: "#book-consultation", label: "Schedule Free Consultation" }
+          { url: "https://radiantexhibits.com/gallery", label: "View Island Portfolio" },
+          { url: "#book-consultation", label: "Plan 20x20 Island Exhibit" }
+        ],
+        chips: [
+          { label: "Custom Solutions", query: "Tell me about custom trade show booths" },
+          { label: "3D Rendering & Design", query: "What 3D rendering and design services do you offer?" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
+          { label: "Get a Quote", query: "How much does an island booth cost?" }
         ]
       },
-      {
-        id: "rentals",
-        keywords: ["rental", "rent", "renting", "lease", "hire", "temporary", "rental booth", "rent booths"],
-        answer: "Our turnkey rental booth packages are the perfect cost-effective solution for single-show exhibitors or international brands! Packages include structural framework, custom branded graphics, lighting, delivery, on-site assembly, and post-show dismantling.",
+
+      dim_tabletop: {
+        answer: "• <strong>Tabletop Displays:</strong> Lightweight pop-ups and tension fabric for standard 6ft & 8ft tables.\n• <strong>Retractable Banners:</strong> Standard 33\" × 80\" and wide 36\" × 90\" pull-ups with carry bags.\n• <strong>Table Throws:</strong> 6ft and 8ft full-color dye-sublimated stretch & fitted branded covers.\n• <strong>Setup & Travel:</strong> Assembles in under 5 minutes with zero tools; fits in checked luggage!\n• <strong>Ideal Venues:</strong> Job fairs, hotel conferences, regional symposiums, and lobby events.",
         links: [
-          { url: "https://radiantexhibits.com/category/rental", label: "View Rental Solutions" },
-          { url: "#contact-details", label: "Inquire About Rentals" }
+          { url: "https://radiantexhibits.com/category/portable-displays/", label: "Browse Tabletop Displays" }
+        ],
+        chips: [
+          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?" },
+          { label: "Portable Displays", query: "What portable display options do you have?" },
+          { label: "Pricing & Quotes", query: "How much do portable displays cost?" }
         ]
       },
-      {
-        id: "custom_booths",
-        keywords: ["custom", "bespoke", "fabrication", "fabricate", "build", "builder", "construction", "manufacture", "custom booth", "custom exhibits", "island booth", "unique"],
-        answer: "Looking for a standout, 100% bespoke presence? Our in-house engineering and fabrication team creates high-impact custom exhibits from 3D rendering to precision manufacturing with premium woods, metals, fabrics, and dynamic lighting. Perfect for 10x20, 20x20, and larger island exhibits.",
+
+      dim_height: {
+        answer: "• <strong>Linear/Inline (10x10, 10x20):</strong> 8ft (2.44m) max backwall; 4ft max on the front 5ft.\n• <strong>Perimeter Walls:</strong> Up to 12ft (3.65m) against the venue exterior perimeter walls.\n• <strong>Island Booths (20x20+):</strong> Typically 16ft to 20ft+ height limits, plus hanging banners.\n• <strong>Rigging & Unions:</strong> We manage ceiling anchor points, electrical drops, and union paperwork.\n• <strong>Show Bylaws:</strong> Our account managers verify exact regulations (MTCC, Enercare, US halls) for you.",
         links: [
-          { url: "https://radiantexhibits.com/gallery", label: "View Custom Booth Portfolio" },
-          { url: "#contact-details", label: "Request Custom Design" }
+          { url: "#book-consultation", label: "Verify Your Show Regulations" }
+        ],
+        chips: [
+          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions" },
+          { label: "Installation Services", query: "Do you handle booth installation and dismantle?" },
+          { label: "Account Management", query: "Tell me about account management services" }
         ]
       },
-      {
-        id: "modular_displays",
-        keywords: ["modular", "hybrid", "truss", "vector", "reconfigurable", "expandable", "flexible", "modular booth"],
-        answer: "Our modular display systems (Vector, Hybrid, Truss) give your brand ultimate flexibility. The same modular hardware can effortlessly expand or downsize between shows (for instance, converting a 10x20 booth into two 10x10 displays), significantly reducing your annual trade show costs.",
+
+      dim_general: {
+        answer: "• <strong>10x10 ft (100 sq ft):</strong> Standard inline footprint with an 8ft backwall height limit.\n• <strong>10x20 ft (200 sq ft):</strong> Double-wide linear space for combined product demos & meeting lounges.\n• <strong>20x20+ ft (400+ sq ft):</strong> Open 4-side island exhibit with 16–20ft height and hanging banners.\n• <strong>Custom Footprints:</strong> We engineer 20x30, 30x30, and custom pavilions to your exact floorplan!\n• <strong>Full Compliance:</strong> We design every booth to meet venue safety, electrical, and union rules.",
         links: [
-          { url: "https://radiantexhibits.com/", label: "Explore Modular Systems" },
-          { url: "#contact-details", label: "Ask About Modular Displays" }
+          { url: "#contact-details", label: "Request Sizing Quote" },
+          { url: "#book-consultation", label: "Schedule Sizing Discovery" }
+        ],
+        chips: [
+          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?" },
+          { label: "10x20 Dimensions", query: "Tell me about 10x20 booth dimensions" },
+          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions" },
+          { label: "Tabletop Displays", query: "What tabletop display options do you have?" }
         ]
       },
-      {
-        id: "portable_displays",
-        keywords: ["portable", "pop up", "popup", "tension fabric", "banner stand", "lightweight", "tabletop", "easy setup", "quick setup", "self setup"],
-        answer: "Need an easy, lightweight display? We supply premium tension fabric backdrops, pop-up displays, and retractable banner stands that set up in minutes with zero tools required. Ideal for 8ft and 10ft spaces or traveling sales teams.",
+
+      // 2. PRODUCT CATEGORIES (Links from radiantexhibits.com)
+      custom_solutions: {
+        answer: "• <strong>Two Custom Paths:</strong> Graphic-Oriented (brand visibility) or Product-Oriented (shelving & demos).\n• <strong>Bespoke Engineering:</strong> 100% custom architecture built to your exact footprint and goals.\n• <strong>In-House Craftsmanship:</strong> Fabricated in Toronto using woods, metals, laminates & LED accents.\n• <strong>25+ Years Experience:</strong> Over 500+ custom exhibits fabricated and installed across North America.\n• <strong>Reusable & Modular:</strong> Designed for easy dismantling, safe crating, and multi-year lifespans.",
         links: [
-          { url: "https://radiantexhibits.com/", label: "View Portable Displays" }
+          { url: "https://radiantexhibits.com/customized-solutions/", label: "View Custom Solutions" },
+          { url: "#contact-details", label: "Request Custom Design Quote" }
+        ],
+        chips: [
+          { label: "3D Rendering & Design", query: "What 3D rendering and design services do you offer?" },
+          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions" },
+          { label: "Installation Services", query: "Do you handle booth installation and dismantle?" },
+          { label: "Pricing & Quotes", query: "How much does a custom booth cost?" }
         ]
       },
-      {
-        id: "installation_dismantle",
-        keywords: ["installation", "install", "dismantle", "tear down", "teardown", "assembly", "assemble", "setup", "set up", "labor", "union", "i&d", "on-site", "build up"],
-        answer: "We provide complete, certified Installation & Dismantle (I&D) services across North America. Our professional team handles venue freight delivery, structural assembly, electrical/lighting connections, flooring installation, union regulations compliance, and post-event teardown so you can focus entirely on your clients.",
+
+      modular_displays: {
+        answer: "• <strong>Flexible Frameworks:</strong> Hybrid aluminum systems, Vector frames & architectural Truss displays.\n• <strong>Scalable Design:</strong> Easily reconfigure the same hardware between 10x10, 10x20, or larger layouts.\n• <strong>Light Box Kits:</strong> Tool-free silicone-edge fabric frames with integrated glowing LED arrays.\n• <strong>Cost-Saving Reusability:</strong> Substantially lowers your total cost of ownership across annual shows.\n• <strong>Compact Logistics:</strong> Packs into wheeled transit cases to save significantly on freight & drayage.",
         links: [
-          { url: "https://radiantexhibits.com/services/installation", label: "Installation Details" },
-          { url: "#contact-details", label: "Book I&D Services" }
+          { url: "https://radiantexhibits.com/category/modular-displays/", label: "Explore Modular Displays" },
+          { url: "#contact-details", label: "Inquire on Modular Systems" }
+        ],
+        chips: [
+          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?" },
+          { label: "10x20 Dimensions", query: "Tell me about 10x20 booth dimensions" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
+          { label: "Get a Quote", query: "How much do modular displays cost?" }
         ]
       },
-      {
-        id: "design_3d",
-        keywords: ["3d", "rendering", "render", "design", "mockup", "concept", "layout", "visual", "drawings", "graphic design"],
-        answer: "Before anything goes to physical production, our in-house 3D design team crafts ultra-realistic 3D architectural mockups of your booth. You can virtually walk through sightlines, evaluate graphics and lighting placements, and optimize visitor circulation to maximize trade show ROI.",
+
+      rental_booths: {
+        answer: "• <strong>Turnkey Convenience:</strong> Complete rental packages for Graphic-Oriented or Product-Oriented goals.\n• <strong>Cost Efficiency:</strong> Save 30% to 50% compared to purchasing new custom framework.\n• <strong>What's Included:</strong> Modular hardware, custom printed fabric graphics, LED lights & counters.\n• <strong>Hassle-Free Logistics:</strong> We manage freight delivery, on-site assembly, teardown, and return.\n• <strong>Ideal For:</strong> Companies attending 1–2 annual shows, international exhibitors, or testing new sizes!",
         links: [
-          { url: "#book-consultation", label: "Schedule 3D Design Review" }
+          { url: "https://radiantexhibits.com/category/rental/", label: "Browse Rental Packages" },
+          { url: "#contact-details", label: "Request Rental Quote" }
+        ],
+        chips: [
+          { label: "10x10 Rentals", query: "What are 10x10 rental options?" },
+          { label: "10x20 Rentals", query: "What are 10x20 rental options?" },
+          { label: "Installation Services", query: "Do you handle booth installation and dismantle?" },
+          { label: "Book Consultation", query: "How can I book a free consultation?" }
         ]
       },
-      {
-        id: "consultation",
-        keywords: ["consultation", "consult", "book", "appointment", "meeting", "strategy", "schedule", "call", "calendly", "online meeting"],
-        answer: "You can book a complimentary 30-minute online strategy consultation with our senior trade show experts! We cover:\n• Booth Life-Cycle & Timeline Planning\n• Custom 3D Concept & Layout Review\n• Transparent Cost & Budget Breakdown\n• Material Selection & Structural Advice\n• Turnkey Installation Schedules & Visibility Tips",
+
+      portable_displays: {
+        answer: "• <strong>Fast Setup Lineup:</strong> Tension fabric pop-ups, stretch fabric backdrops, lightboxes & banner stands.\n• <strong>Tool-Free Assembly:</strong> Assembles in 5 to 15 minutes with simple push-pin or magnetic lock connections.\n• <strong>Dye-Sub Fabric Graphics:</strong> Vibrant, high-resolution, washable, and wrinkle-resistant fabric printing.\n• <strong>Ultra-Lightweight Travel:</strong> Entire display packs into a compact wheeled shipping case or duffle bag.\n• <strong>Perfect For:</strong> Regional expos, recruiting fairs, mobile sales teams, and 10x10 inline booths.",
         links: [
-          { url: "#book-consultation", label: "Book Consultation on Calendar" }
+          { url: "https://radiantexhibits.com/category/portable-displays/", label: "Browse Portable Displays" }
+        ],
+        chips: [
+          { label: "Tabletop Displays", query: "What tabletop display options do you have?" },
+          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?" },
+          { label: "Pricing & Quotes", query: "How much do portable displays cost?" }
         ]
       },
-      {
-        id: "location_hours",
-        keywords: ["location", "address", "where", "visit", "showroom", "office", "facility", "directions", "map", "hours", "open", "toronto"],
-        answer: "📍 Office & Showroom Location:\n150 Milner Ave, Unit #19, Toronto, ON M1S 3R3, Canada.\n\n🕒 Hours of Operation:\nMonday – Friday: 9:00 AM – 5:30 PM EST.\n\nVisits are welcome to inspect modular frames, lighting, and sample material finishes in person!",
+
+      // 3. SERVICES (from https://radiantexhibits.com/services/)
+      services_overview: {
+        answer: "• <strong>End-to-End Execution:</strong> From initial concept to final show-floor teardown and warehousing.\n• <strong>8 Core Services:</strong> 1. Consultation | 2. 3D Design | 3. Build | 4. Installation & Dismantle (I&D).\n• <strong>Turnkey Support:</strong> 5. Equipment Rentals | 6. Logistics & Storage | 7. Account Management | 8. Concierge.\n• <strong>Complete Peace of Mind:</strong> We handle venue unions, safety paperwork, freight, and on-site crews.\n• <strong>North American Coverage:</strong> Full service across Toronto, Montreal, Vancouver, Las Vegas, Chicago, etc.",
         links: [
-          { url: "https://maps.google.com/?q=150+Milner+Ave,+Unit+%2319,+Toronto,+ON+M1S+3R3", label: "Open in Google Maps" }
+          { url: "https://radiantexhibits.com/services/", label: "View All 8 Services" },
+          { url: "#book-consultation", label: "Schedule Service Discovery" }
+        ],
+        chips: [
+          { label: "Installation Services", query: "Do you handle booth installation and dismantle?" },
+          { label: "3D Rendering & Design", query: "What 3D rendering and design services do you offer?" },
+          { label: "Logistics & Storage", query: "Tell me about shipping, logistics, and storage" },
+          { label: "Concierge Service", query: "What is your white glove concierge service?" }
         ]
       },
-      {
-        id: "contact_info",
-        keywords: ["contact", "phone", "telephone", "call", "number", "email", "sales", "reach", "talk", "speak", "agent", "human"],
-        answer: "Connect directly with our team:\n• Local (Toronto): 416-412-0500\n• Toll-Free (North America): 1-855-412-0500\n• Direct Email: sales@radiantexhibits.com\n• Facility: 150 Milner Ave, Unit #19, Toronto, ON M1S 3R3\n\nWe respond to all online inquiries within 24 business hours!",
+
+      service_installation: {
+        answer: "• <strong>Certified I&D Crews:</strong> Dedicated teams across major convention halls in Canada and the USA.\n• <strong>On-Site Setup:</strong> Freight check-in, structural assembly, electrical/lighting connections & flooring.\n• <strong>Union & Venue Compliance:</strong> Experienced with strict facility rules (MTCC, Enercare, Las Vegas, Chicago).\n• <strong>Post-Show Teardown:</strong> Immediate dismantling, careful inventory re-packing, and outbound freight loading.\n• <strong>Emergency Support:</strong> On-site technician available during trade show hours for rapid adjustments.",
+        links: [
+          { url: "https://radiantexhibits.com/services/", label: "Installation Details" },
+          { url: "#contact-details", label: "Book Installation Crew" }
+        ],
+        chips: [
+          { label: "Logistics & Storage", query: "Tell me about shipping, logistics, and storage" },
+          { label: "Account Management", query: "Tell me about account management services" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" }
+        ]
+      },
+
+      service_3d_design: {
+        answer: "• <strong>Photorealistic Mockups:</strong> In-house 3D design team renders your booth before fabrication starts.\n• <strong>Spatial Analysis:</strong> Review sightlines, traffic flow, monitor sight angles, and graphics placement.\n• <strong>Architectural Drawings:</strong> Detailed dimensions, electrical requirements, and engineering documentation.\n• <strong>Avoid Costly Changes:</strong> Explore materials, lighting cues, and finishes virtually to guarantee perfection.\n• <strong>Included With Builds:</strong> Free 3D design concepts provided with custom booth inquiries!",
+        links: [
+          { url: "#book-consultation", label: "Book 3D Design Review" }
+        ],
+        chips: [
+          { label: "Custom Solutions", query: "Tell me about custom trade show booths" },
+          { label: "Modular Displays", query: "What are your modular display options?" },
+          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions" }
+        ]
+      },
+
+      service_concierge: {
+        answer: "• <strong>VIP Executive Travel:</strong> Hotel room block bookings, airport transfers, and private executive shuttles.\n• <strong>Booth Hospitality & Staff:</strong> Professional multilingual booth hostesses, lead capture staff, and catering.\n• <strong>On-Ground Support:</strong> Dedicated concierge coordinator on-site to handle immediate executive needs.\n• <strong>Total Hands-Off Experience:</strong> Your staff focuses purely on closing deals while we handle all logistics.",
+        links: [
+          { url: "https://radiantexhibits.com/services/", label: "Explore Concierge Services" }
+        ],
+        chips: [
+          { label: "All Services", query: "What services does Radiant Exhibits offer?" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
+          { label: "Contact Direct", query: "What is your phone number and email address?" }
+        ]
+      },
+
+      service_logistics_storage: {
+        answer: "• <strong>Custom Wooden Crates:</strong> Precision-built protective crates ensure graphics and structures travel safely.\n• <strong>Nationwide Freight:</strong> Coordinated ground and air freight to convention halls across Canada and the US.\n• <strong>Climate-Controlled Storage:</strong> Secure warehouse facility in Toronto between your scheduled exhibitions.\n• <strong>Turnkey Asset Management:</strong> We clean, inspect, and inventory all components so they're ready for your next event.",
+        links: [
+          { url: "https://radiantexhibits.com/services/", label: "View Storage & Logistics" }
+        ],
+        chips: [
+          { label: "Installation Services", query: "Do you handle booth installation and dismantle?" },
+          { label: "Toronto Location", query: "Where is your showroom and office located?" },
+          { label: "All Services", query: "What services does Radiant Exhibits offer?" }
+        ]
+      },
+
+      // 4. ABOUT US & COMPANY DETAILS (from https://radiantexhibits.com/about-us/)
+      about_radiant: {
+        answer: "• <strong>Who We Are:</strong> Canada's leading trade show booth builder with over 25+ years of industry experience.\n• <strong>Toronto Headquarters:</strong> Showroom and fabrication facility located at 150 Milner Ave, Unit #19, Toronto.\n• <strong>Proven Track Record:</strong> 500+ custom and rental projects delivered for startups to Fortune 500 brands.\n• <strong>Core Philosophy:</strong> Combining structural craftsmanship with marketing strategy to maximize show floor ROI.",
+        links: [
+          { url: "https://radiantexhibits.com/about-us/", label: "About Radiant Exhibits" },
+          { url: "https://radiantexhibits.com/gallery", label: "View Project Gallery" }
+        ],
+        chips: [
+          { label: "Toronto Location", query: "Where is your showroom and office located?" },
+          { label: "Contact Info", query: "What is your phone number and email address?" },
+          { label: "Custom Exhibits", query: "Tell me about custom trade show booths" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" }
+        ]
+      },
+
+      location_hours: {
+        answer: "• <strong>Office & Facility:</strong> 150 Milner Ave, Unit #19, Toronto, ON M1S 3R3, Canada.\n• <strong>Operating Hours:</strong> Monday – Friday: 9:00 AM – 5:30 PM EST (Closed Sat & Sun).\n• <strong>In-Person Visits:</strong> Welcome by appointment to inspect frames, finishes, fabrics, and lightboxes!\n• <strong>Directions:</strong> Centrally located in Scarborough/Toronto with quick access to Hwy 401 & 404.",
+        links: [
+          { url: "https://maps.google.com/?q=150+Milner+Ave,+Unit+%2319,+Toronto,+ON+M1S+3R3", label: "Open in Google Maps" },
+          { url: "tel:4164120500", label: "Call Showroom" }
+        ],
+        chips: [
+          { label: "Contact Direct", query: "What is your phone number and email address?" },
+          { label: "Book Consultation", query: "How can I book a free consultation?" },
+          { label: "All Products", query: "What booth options and products do you have?" }
+        ]
+      },
+
+      contact_info: {
+        answer: "• <strong>Local Phone (Toronto):</strong> 416-412-0500\n• <strong>Toll-Free (North America):</strong> 1-855-412-0500\n• <strong>Direct Email:</strong> sales@radiantexhibits.com\n• <strong>Showroom & Plant:</strong> 150 Milner Ave, Unit #19, Toronto, ON M1S 3R3\n• <strong>Prompt Turnaround:</strong> All online quote requests are answered within 24 business hours!",
         links: [
           { url: "tel:4164120500", label: "Call 416-412-0500" },
-          { url: "mailto:sales@radiantexhibits.com", label: "Send an Email" }
+          { url: "mailto:sales@radiantexhibits.com", label: "Send an Email" },
+          { url: "#contact-details", label: "Submit Online Inquiry" }
+        ],
+        chips: [
+          { label: "Pricing & Quotes", query: "How much does a trade show booth cost?" },
+          { label: "Book Consultation", query: "How can I book a free consultation?" },
+          { label: "Toronto Location", query: "Where is your showroom and office located?" }
         ]
       },
-      {
-        id: "sizes",
-        keywords: ["size", "sizes", "10x10", "10x20", "20x20", "20x30", "30x30", "dimension", "dimensions", "inline", "corner", "island"],
-        answer: "We engineer trade show displays for all footprint sizes:\n• 10x10 Inline Booths: Compact, high-visibility backdrops & counters\n• 10x20 Booths: Extra footprint for product demos & meeting spaces\n• 20x20+ Island Exhibits: 360-degree visibility, high-hanging signs & private conference rooms\n• Custom Sizes: Engineered to your exact booth footprint.",
+
+      pricing_quotes: {
+        answer: "• <strong>Itemized Transparency:</strong> We provide custom quotes with zero hidden venue or union surprises.\n• <strong>Portable Displays:</strong> Accessible, budget-friendly packages starting at economical price points.\n• <strong>Turnkey Rentals:</strong> Save 30% to 50% vs purchasing new, with all I&D and logistics included.\n• <strong>Custom Exhibits:</strong> Tailored to your multi-year marketing budget with 100% bespoke fabrication.\n• <strong>Free Estimates:</strong> Fill out our inquiry form or schedule a consultation for a detailed price breakdown!",
         links: [
-          { url: "#contact-details", label: "Get a Size-Specific Quote" }
+          { url: "#contact-details", label: "Request Free Quote" },
+          { url: "#book-consultation", label: "Schedule Consultation" }
+        ],
+        chips: [
+          { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
+          { label: "Custom Solutions", query: "Tell me about custom trade show booths" }
         ]
       },
-      {
-        id: "accessories_lighting",
-        keywords: ["accessories", "lighting", "lightbox", "led", "flooring", "carpet", "furniture", "counter", "kiosk", "screen", "tv", "hologram", "table", "chair"],
-        answer: "We provide complete trade show accessories and equipment rentals:\n• Vibrant LED Backlit Lightboxes\n• Custom Reception Counters & Display Kiosks\n• Hardwood, Vinyl, and Foam Trade Show Flooring\n• AV Video Screens, TV Mounts & Digital Displays\n• Lounge Seating, Barstools, and Meeting Tables",
+
+      consultation_session: {
+        answer: "• <strong>Free Strategy Call:</strong> Complimentary 30-minute online session with a senior exhibit consultant.\n• <strong>What's Covered:</strong> 1. Booth Layout & 3D Goals | 2. Itemized Cost & Quote Breakdown.\n• <strong>Strategic Planning:</strong> 3. Turnkey Installation Timelines | 4. Visibility & Traffic Maximization Tips.\n• <strong>Zero Obligation:</strong> Get complete clarity on budget, footprint, and regulatory rules before committing.",
         links: [
-          { url: "https://radiantexhibits.com/", label: "Explore Accessories" }
+          { url: "#book-consultation", label: "Book Online Strategy Call" }
+        ],
+        chips: [
+          { label: "Pricing & Quotes", query: "How much does a trade show booth cost?" },
+          { label: "Custom Solutions", query: "Tell me about custom trade show booths" },
+          { label: "Booth Dimensions", query: "What booth dimensions and sizes do you offer?" }
         ]
       },
-      {
-        id: "logistics_storage",
-        keywords: ["logistics", "shipping", "freight", "transport", "storage", "warehouse", "store", "dismantle logistics", "crate", "crating"],
-        answer: "We handle the complete physical logistics lifecycle: secure protective crating, coordinated freight to and from the convention hall, customs handling for cross-border events, and safe temperature-controlled warehouse storage between shows.",
+
+      portfolio_gallery: {
+        answer: "• <strong>Proven Work:</strong> Hundreds of custom trade show exhibits built across North America.\n• <strong>Diverse Industries:</strong> Healthcare, enterprise tech, consumer goods, food & industrial manufacturing.\n• <strong>Key Clients:</strong> Trusted by Softworks, BD, Unifits, Edwards Lifesciences & Third Eye Insights.\n• <strong>Visual Proof:</strong> Explore high-res photos of 10x10, 10x20, and 20x20 island exhibits in our gallery!",
         links: [
-          { url: "https://radiantexhibits.com/services/", label: "View Logistics Services" }
+          { url: "https://radiantexhibits.com/gallery", label: "Browse Photo Gallery" }
+        ],
+        chips: [
+          { label: "Custom Solutions", query: "Tell me about custom trade show booths" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
+          { label: "Get a Quote", query: "How much does a booth cost?" }
         ]
       },
-      {
-        id: "service_areas",
-        keywords: ["area", "areas", "city", "cities", "canada", "usa", "us", "america", "montreal", "vancouver", "vegas", "las vegas", "chicago", "orlando", "venue", "mtcc", "enercare"],
-        answer: "We provide turnkey exhibit services across North America:\n• Canada: Toronto (MTCC, Enercare, International Centre), Montreal, Vancouver, Calgary, Ottawa, Edmonton\n• USA: Las Vegas, Chicago, Orlando, Atlanta, Anaheim, New York, Dallas, Boston, and more.",
+
+      timeline_turnaround: {
+        answer: "• <strong>Custom Exhibits:</strong> 4 to 8 weeks from 3D design sign-off for manufacturing and test setup.\n• <strong>Modular & Rental Booths:</strong> 2 to 4 weeks for graphics production and hardware prep.\n• <strong>Portable Displays:</strong> 1 to 2 weeks for fast printing and shipping.\n• <strong>Rush Availability:</strong> Need a booth in days? We specialize in tight turnarounds—call 416-412-0500 right away!",
         links: [
-          { url: "#contact-details", label: "Check Your Venue Schedule" }
+          { url: "tel:4164120500", label: "Call for Rush Deadlines" }
+        ],
+        chips: [
+          { label: "Pricing & Quotes", query: "How much does a trade show booth cost?" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
+          { label: "Contact Info", query: "What is your phone number and email address?" }
         ]
       },
-      {
-        id: "timeline",
-        keywords: ["timeline", "turnaround", "how long", "lead time", "deadline", "weeks", "rush", "urgent", "fast", "speed"],
-        answer: "Recommended timelines:\n• Custom Builds: 4 to 8 weeks from design sign-off\n• Modular & Rental Booths: 2 to 4 weeks\n• Portable Displays: 1 to 2 weeks\n\nFacing a tight deadline? We frequently handle rush turnarounds—call us at 416-412-0500 to discuss your show dates immediately!",
+
+      accessories_equipment: {
+        answer: "• <strong>Illumination:</strong> LED backlit SEG lightboxes, halogen/LED arm spotlights & ambient illumination.\n• <strong>Display Furniture:</strong> Modern reception counters, barstools, lounge seating & lockable pedestals.\n• <strong>Flooring Solutions:</strong> Interlocking anti-fatigue foam, rolled plush carpet & realistic wood-grain vinyl.\n• <strong>Digital Media:</strong> TV mounts, AV video walls, touch displays, holograms & tablet stands.",
         links: [
-          { url: "tel:4164120500", label: "Call for Rush Availability" }
+          { url: "https://radiantexhibits.com/", label: "View Accessories" },
+          { url: "#contact-details", label: "Add Accessories to Quote" }
+        ],
+        chips: [
+          { label: "Custom Solutions", query: "Tell me about custom trade show booths" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
+          { label: "Pricing & Quotes", query: "How much do accessories cost?" }
         ]
       },
-      {
-        id: "portfolio",
-        keywords: ["portfolio", "gallery", "examples", "photos", "pictures", "past work", "case studies", "previous booths", "past clients"],
-        answer: "We have created award-winning exhibits across healthcare, technology, retail, agriculture, aerospace, and manufacturing sectors. Explore hundreds of real booth photos in our project portfolio!",
+
+      venues_locations: {
+        answer: "• <strong>Toronto Core:</strong> Metro Toronto Convention Centre (MTCC), Enercare Centre, International Centre Mississauga.\n• <strong>Canadian Venues:</strong> Montreal Palais des congrès, Vancouver Convention Centre, Calgary BMO Centre, Ottawa.\n• <strong>US Convention Hubs:</strong> Las Vegas (LVCC, Venetian), Chicago (McCormick), Orlando (OCCC), Anaheim, Atlanta.\n• <strong>Regulatory Experts:</strong> We handle union electrical, rigging orders, and venue safety paperwork everywhere.",
         links: [
-          { url: "https://radiantexhibits.com/gallery", label: "Browse Project Gallery" }
+          { url: "#contact-details", label: "Check Venue Availability" }
+        ],
+        chips: [
+          { label: "Installation Services", query: "Do you handle booth installation and dismantle?" },
+          { label: "Turnkey Rentals", query: "Tell me about trade show booth rentals" },
+          { label: "Toronto Location", query: "Where is your showroom and office located?" }
+        ]
+      },
+
+      greetings: {
+        answer: "Hello! 👋 Welcome to <strong>Radiant Exhibits</strong>, Canada's premier trade show booth specialists.\nWe provide custom booths, modular displays, turnkey rentals, and on-site installation across North America.\nHow can I help you prepare for your upcoming exhibition?\nFeel free to type any question (e.g. dimensions, pricing, rentals) or select a popular topic below:",
+        links: [],
+        chips: initialChips
+      },
+
+      thanks: {
+        answer: "You're very welcome! 😊 Our team is dedicated to making your trade show appearance seamless and stress-free.\nFeel free to ask any more questions, submit an inquiry above, or call us directly at 416-412-0500.",
+        links: [
+          { url: "#contact-details", label: "Send an Inquiry" },
+          { url: "#book-consultation", label: "Schedule Free Consultation" }
+        ],
+        chips: [
+          { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?" },
+          { label: "📐 Booth Dimensions", query: "What booth dimensions and sizes do you offer?" },
+          { label: "🏢 Turnkey Rentals", query: "Tell me about trade show booth rentals" }
         ]
       }
-    ];
+    };
 
-    // Build the Initial Welcome Message HTML
+    // Build Welcome Message HTML
     function getWelcomeHTML() {
       let chipsHTML = `<div class="chat-chips-container">`;
-      quickChips.forEach((chip) => {
-        chipsHTML += `<button type="button" class="chat-chip-btn" data-query="${chip.query}">${chip.label}</button>`;
+      initialChips.forEach((chip) => {
+        chipsHTML += `<button type="button" class="chat-chip-btn" data-query="${escapeHTML(chip.query)}">${escapeHTML(chip.label)}</button>`;
       });
       chipsHTML += `</div>`;
 
       return `
         <div class="msg-row bot">
-          <div class="bubble">Hi 👋 Welcome to <strong>Radiant Exhibits</strong>! How can I help you today? Ask any question or tap a quick topic below:</div>
+          <div class="bubble">Hi 👋 Welcome to <strong>Radiant Exhibits</strong>! I can answer questions about our booth dimensions, custom designs, rentals, pricing, and services.<br><br>Ask anything or tap a quick topic below:</div>
           ${chipsHTML}
         </div>
       `;
@@ -296,73 +473,79 @@
       });
     }
 
-    // Natural Language Keyword & Intent Matching Algorithm
+    // Comprehensive NLP & Intent Matching Algorithm
     function findBestMatch(userText) {
-      const clean = userText.toLowerCase().replace(/[^\w\s]/g, " ").trim();
-      const words = clean.split(/\s+/).filter(w => w.length > 1);
+      const clean = userText.toLowerCase().trim();
 
-      let bestItem = null;
-      let highestScore = 0;
+      // 1. SPECIFIC DIMENSION CHECKS (Highest Priority)
+      if (/\b10\s*(?:x|by|\*)\s*10\b|100\s*sq|10\s*ft\s*booth\b/.test(clean)) return 'dim_10x10';
+      if (/\b10\s*(?:x|by|\*)\s*20\b|200\s*sq|20\s*ft\s*booth\b/.test(clean)) return 'dim_10x20';
+      if (/\b20\s*(?:x|by|\*)\s*20\b|400\s*sq|\bisland\b/.test(clean)) return 'dim_20x20';
+      if (/\b(?:table\s*top|tabletop|6ft|8ft\s*table|pull\s*up|banner\s*stand|retractable)\b/.test(clean)) return 'dim_tabletop';
+      if (/\b(?:height|how\s*tall|hanging\s*sign|rigging|ceiling|perimeter)\b/.test(clean)) return 'dim_height';
+      if (/\b(?:dimension|dimensions|sizes?|footprint|footprints|measurements?)\b/.test(clean)) return 'dim_general';
 
-      for (const item of knowledgeBase) {
-        let score = 0;
+      // 2. CONVERSATIONAL INTENTS
+      if (/^(?:hi|hello|hey|good\s*morning|good\s*afternoon|good\s*evening)\b/.test(clean)) return 'greetings';
+      if (/\b(?:thank|thanks|appreciate|awesome|perfect|great\s*job)\b/.test(clean)) return 'thanks';
+      if (/\b(?:who\s*(?:are\s*you|is\s*radiant)|about\s*(?:us|radiant|company))\b/.test(clean)) return 'about_radiant';
 
-        for (const kw of item.keywords) {
-          const kwLower = kw.toLowerCase();
+      // 3. PRODUCT CATEGORIES (Based on site links)
+      if (/\b(?:rent|rental|rentals|renting|lease|hire)\b/.test(clean)) return 'rental_booths';
+      if (/\b(?:custom|customized|bespoke|fabrication|fabricate|wood|metal|graphic-oriented|product-oriented)\b/.test(clean)) return 'custom_solutions';
+      if (/\b(?:modular|hybrid|truss|vector|reconfigurable|extrusions?)\b/.test(clean)) return 'modular_displays';
+      if (/\b(?:portable|pop\s*up|popup|tension\s*fabric|stretch\s*fabric|lightweight)\b/.test(clean)) return 'portable_displays';
+      if (/\b(?:accessories|lighting|light\s*box|lightbox|flooring|carpet|furniture|counters?|kiosks?|screens?|tv|monitors?|holograms?)\b/.test(clean)) return 'accessories_equipment';
 
-          // Exact phrase match bonus
-          if (clean.includes(kwLower)) {
-            score += kwLower.length * 2.5;
-          }
+      // 4. SERVICES CATEGORIES (Based on /services/)
+      if (/\b(?:install|installation|dismantle|teardown|assembly|assemble|labor|i&d|union)\b/.test(clean)) return 'service_installation';
+      if (/\b(?:3d|render|rendering|renderings|cad|mockup|mockups|layout|drawings?)\b/.test(clean)) return 'service_3d_design';
+      if (/\b(?:concierge|white\s*glove|hotel|shuttle|catering|hospitality|booth\s*staff)\b/.test(clean)) return 'service_concierge';
+      if (/\b(?:logistics|freight|shipping|storage|warehouse|store|crates?|crating)\b/.test(clean)) return 'service_logistics_storage';
+      if (/\b(?:services?|what\s*do\s*you\s*do|solutions?)\b/.test(clean)) return 'services_overview';
 
-          // Individual word match
-          for (const word of words) {
-            if (kwLower === word) {
-              score += 10;
-            } else if (kwLower.includes(word) && word.length > 3) {
-              score += 4;
-            }
-          }
-        }
-
-        if (score > highestScore) {
-          highestScore = score;
-          bestItem = item;
-        }
-      }
-
-      // Minimum confidence threshold
-      if (highestScore >= 6) {
-        return bestItem;
-      }
+      // 5. COMMERCIAL & CONTACT INTENTS
+      if (/\b(?:price|pricing|costs?|how\s*much|budget|quotes?|quotation|rates?|estimate)\b/.test(clean)) return 'pricing_quotes';
+      if (/\b(?:book|consultation|schedule|appointment|meeting|strategy\s*call|calendly)\b/.test(clean)) return 'consultation_session';
+      if (/\b(?:location|address|where|showroom|visit|facility|milner|hours|open|when\s*open|toronto)\b/.test(clean)) return 'location_hours';
+      if (/\b(?:contact|phone|telephone|call|number|email|sales|reach|speak|talk)\b/.test(clean)) return 'contact_info';
+      if (/\b(?:portfolio|gallery|photos?|pictures?|past\s*work|previous|clients?|examples?)\b/.test(clean)) return 'portfolio_gallery';
+      if (/\b(?:timeline|turnaround|how\s*long|lead\s*time|rush|urgent|deadline|weeks?)\b/.test(clean)) return 'timeline_turnaround';
+      if (/\b(?:venues?|cities|city|locations?|convention|centre|center|mtcc|enercare|vegas|las\s*vegas|chicago|orlando|montreal|vancouver)\b/.test(clean)) return 'venues_locations';
 
       return null;
     }
 
-    // User submission handler
+    // User query submission handler
     function handleUserQuery(text) {
       if (!text || !text.trim()) return;
       const cleanQuery = text.trim();
 
       renderUserMessage(cleanQuery);
-
       if (input) input.value = "";
 
-      // Quick simulated natural typing delay for smooth UX
+      // Instant natural reaction delay (100ms)
       setTimeout(() => {
-        const match = findBestMatch(cleanQuery);
+        const matchId = findBestMatch(cleanQuery);
+        const data = matchId ? knowledgeBase[matchId] : null;
 
-        if (match) {
-          renderBotMessage(match.answer, match.links || [], match.showChips || false);
+        if (data) {
+          renderBotMessage(data.answer, data.links || [], data.chips || []);
         } else {
-          // Polite fallback with direct phone / email and quick topics
-          const fallbackText = "I don't have the exact details on that specific question yet, but our Toronto trade show specialists can answer immediately! Call us at 416-412-0500 or email sales@radiantexhibits.com.\n\nYou can also explore one of our popular topics below:";
+          // Accurate, structured fallback with suggestions and direct contacts
+          const fallbackText = "• I don't have the exact details on that specific question yet.\n• Our Toronto trade show specialists can answer your question immediately!\n• Call us directly at <strong>416-412-0500</strong> or email <strong>sales@radiantexhibits.com</strong>.\n• You can also tap one of our popular topics below to explore our services:";
+          
           renderBotMessage(fallbackText, [
             { url: "tel:4164120500", label: "Call 416-412-0500" },
-            { url: "#contact-details", label: "Send Us an Inquiry" }
-          ], true);
+            { url: "#contact-details", label: "Send an Inquiry" }
+          ], [
+            { label: "📐 Booth Dimensions", query: "What booth dimensions and sizes do you offer?" },
+            { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?" },
+            { label: "🏢 Turnkey Rentals", query: "Tell me about trade show booth rentals" },
+            { label: "🎨 Custom Exhibits", query: "What custom booth design options do you offer?" }
+          ]);
         }
-      }, 150);
+      }, 100);
     }
 
     function renderUserMessage(text) {
@@ -374,17 +557,17 @@
       msgContainer.scrollTop = msgContainer.scrollHeight;
     }
 
-    function renderBotMessage(text, links = [], showChips = false) {
+    function renderBotMessage(text, links = [], chips = []) {
       if (!msgContainer) return;
 
       const row = document.createElement("div");
       row.className = "msg-row bot";
 
-      // Format linebreaks into readable HTML
-      const formattedText = escapeHTML(text).replace(/\n/g, "<br>");
+      // Convert line breaks to clean HTML paragraphs/breaks
+      const formattedText = text.replace(/\n/g, "<br>");
       let innerHTML = `<div class="bubble">${formattedText}</div>`;
 
-      // Render Action Buttons
+      // Render Direct Action Buttons
       if (links && links.length > 0) {
         innerHTML += `<div class="chat-action-wrapper">`;
         links.forEach((l) => {
@@ -393,23 +576,23 @@
         innerHTML += `</div>`;
       }
 
-      // Append Chips if requested
-      if (showChips) {
+      // Render Suggested Follow-up Chips
+      if (chips && chips.length > 0) {
         innerHTML += `<div class="chat-chips-container">`;
-        quickChips.forEach((chip) => {
-          innerHTML += `<button type="button" class="chat-chip-btn" data-query="${chip.query}">${chip.label}</button>`;
+        chips.forEach((c) => {
+          innerHTML += `<button type="button" class="chat-chip-btn" data-query="${escapeHTML(c.query)}">${escapeHTML(c.label)}</button>`;
         });
         innerHTML += `</div>`;
       }
 
-      // Support footer info
+      // Minimal footer info
       innerHTML += `<div class="chat-fallback-info">Need immediate assistance? Call <a href="tel:416-412-0500">416-412-0500</a> or email <a href="mailto:sales@radiantexhibits.com">sales@radiantexhibits.com</a>.</div>`;
 
       row.innerHTML = innerHTML;
       msgContainer.appendChild(row);
 
-      // Rebind chip clicks if any chips were rendered
-      if (showChips) {
+      // Bind click handlers to newly added follow-up chips
+      if (chips && chips.length > 0) {
         bindChipButtons(row);
       }
 
@@ -482,8 +665,8 @@
 
   /* WINDOW LAYOUT CONTAINER */
   .chat-window {
-    width: 375px;
-    height: 570px;
+    width: 380px;
+    height: 580px;
     background: #eef4fb;
     border-radius: 20px;
     overflow: hidden;
@@ -497,7 +680,7 @@
     transform: translateY(16px) scale(0.96);
     transition: all 0.25s cubic-bezier(0.075, 0.82, 0.165, 1);
     box-shadow: 0 12px 36px rgba(15, 23, 42, 0.2);
-    border: 1px solid rgba(255, 255, 255, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.6);
   }
   .chat-window.active {
     opacity: 1;
@@ -579,12 +762,12 @@
 
   /* SPEECH BUBBLES */
   .bubble {
-    padding: 10px 14px;
-    font-size: 13.5px;
+    padding: 11px 14px;
+    font-size: 13px;
     line-height: 1.6;
     word-wrap: break-word;
     font-weight: 400;
-    max-width: 82%;
+    max-width: 86%;
     box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
   }
 
@@ -609,7 +792,7 @@
     gap: 6px;
     margin-top: 8px;
     margin-bottom: 2px;
-    max-width: 90%;
+    max-width: 92%;
   }
   .chat-chip-btn {
     background: #ffffff;
@@ -639,7 +822,7 @@
   /* ACTION REDIRECT BUTTONS */
   .chat-action-wrapper {
     margin-top: 8px;
-    width: 82%; 
+    width: 86%; 
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -667,11 +850,11 @@
 
   /* SUB-TEXT FOOTER */
   .chat-fallback-info {
-    font-size: 12px;
+    font-size: 11.5px;
     color: #64748b;
     margin-top: 6px;
     line-height: 1.4;
-    max-width: 82%;
+    max-width: 86%;
   }
   .chat-fallback-info a { color: #0284c7; text-decoration: none; font-weight: 600; }
   .chat-fallback-info a:hover { text-decoration: underline; }

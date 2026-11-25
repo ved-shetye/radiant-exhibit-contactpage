@@ -68,10 +68,11 @@
     if (bubble.dataset.chatInitialized === "true") return;
     bubble.dataset.chatInitialized = "true";
 
-    // Standard Quote URL redirected to the dedicated Contact Us page
+    // Standard Quote & Tool URLs
     const CONTACT_PAGE_URL = "https://radiantexhibits.com/contact-us/";
+    const BOOTH_SELECTOR_URL = "https://radiantexhibits.com/trade-show-booth-selector/";
 
-    // Comprehensive Radiant Exhibits Knowledge Base (33 Non-Repeating, Precise Categories)
+    // Comprehensive Radiant Exhibits Knowledge Base (34 Non-Repeating, Precise Categories)
     const knowledgeBase = {
       // 1. COMPANY OVERVIEW & CORE IDENTITY
       about_radiant: {
@@ -82,22 +83,37 @@
         ],
         chips: [
           { label: "🌟 Why Choose Radiant", query: "Why should I choose Radiant Exhibits?", intent: "why_choose_radiant" },
+          { label: "🎯 Booth Selector Tool", query: "Help me choose the right booth for my show", intent: "booth_selector" },
           { label: "⚙️ Our 4-Step Process", query: "How does your exhibit design and build process work?", intent: "process_workflow" },
-          { label: "🛠️ What We Offer", query: "What products and services do you offer?", intent: "what_we_do" },
           { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?", intent: "pricing_quotes" }
         ]
       },
 
       why_choose_radiant: {
-        answer: "• <strong>25+ Years Experience:</strong> Trusted by Fortune 500 brands and innovators (Softworks, BD, Unifits, Edwards Lifesciences).\n• <strong>100% In-House Control:</strong> In-house 3D designers, master builders & graphic printers eliminate third-party broker markups.\n• <strong>Zero Show-Floor Surprises:</strong> Transparent itemized quotes, pre-show staging test builds & full union compliance guaranteed.\n• <strong>Dedicated Account Manager:</strong> One senior exhibit specialist guides you from CAD concept to show-floor handover.\n• <strong>North American Logistics:</strong> Climate-controlled Toronto warehouse and coordinated freight to all major convention halls.",
+        answer: "• <strong>25+ Years Proven Track Record:</strong> Trusted by market leaders (Softworks, BD, Unifits, Edwards Lifesciences).\n• <strong>100% In-House Control:</strong> In-house 3D designers, master builders & graphic technicians—no third-party broker markups.\n• <strong>Zero Show-Floor Surprises:</strong> Transparent itemized quotes, pre-show staging test builds & full union compliance guaranteed.\n• <strong>Comprehensive Solutions:</strong> From budget-friendly rentals and scalable modular frames to bespoke custom fabrication and certified I&D.\n• <strong>Dedicated Account Manager:</strong> One senior exhibit specialist guides you from CAD concept to show-floor handover.",
         links: [
-          { url: CONTACT_PAGE_URL, label: "Get a Custom Quote" },
-          { url: "#book-consultation", label: "Schedule Strategy Call" }
+          { url: BOOTH_SELECTOR_URL, label: "🎯 Try Trade Show Booth Selector" },
+          { url: CONTACT_PAGE_URL, label: "Get a Custom Quote (Contact Us)" },
+          { url: "#book-consultation", label: "Schedule Free Strategy Call" }
         ],
         chips: [
+          { label: "🎯 Booth Selector Tool", query: "Help me choose the right booth for my show", intent: "booth_selector" },
           { label: "⚙️ How It Works", query: "What is your build process?", intent: "process_workflow" },
           { label: "📸 Past Portfolio", query: "Can I see your portfolio of previous booths?", intent: "portfolio_gallery" },
+          { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?", intent: "pricing_quotes" }
+        ]
+      },
+
+      booth_selector: {
+        answer: "• <strong>Trade Show Booth Selector:</strong> Use our smart interactive tool to instantly discover the ideal exhibit for your event!\n• <strong>Tailored Recommendations:</strong> Answer a few quick questions about your floor space, branding goals & budget.\n• <strong>Purchase vs Rental Comparison:</strong> Compare buying hardware vs cost-effective turnkey rentals (saving 30%–50%).\n• <strong>Instant Next Steps:</strong> Matches you with optimal 10x10, 10x20, island, or modular setups and lets you request a tailored 3D quote!",
+        links: [
+          { url: BOOTH_SELECTOR_URL, label: "🎯 Launch Trade Show Booth Selector" },
+          { url: CONTACT_PAGE_URL, label: "Get a Custom Quote (Contact Us)" }
+        ],
+        chips: [
+          { label: "📐 10x10 Dimensions", query: "What are 10x10 booth dimensions?", intent: "dim_10x10" },
           { label: "🏢 Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" },
+          { label: "🎨 Custom Exhibits", query: "Tell me about custom trade show booths", intent: "custom_solutions" },
           { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?", intent: "pricing_quotes" }
         ]
       },
@@ -118,13 +134,14 @@
       what_we_do: {
         answer: "• <strong>Bespoke Custom Exhibits:</strong> Built-to-order trade show environments engineered to showcase products and engage attendees.\n• <strong>Flexible Modular Systems:</strong> Reconfigurable aluminum frames & backlit displays that scale from 10x10 to 10x20 and island setups.\n• <strong>Turnkey Booth Rentals:</strong> Save 30%–50% vs buying new with full I&D, custom printed graphics, and logistics included.\n• <strong>Complete Show Services:</strong> 3D CAD design, certified union labor, freight management, and secure climate-controlled storage.",
         links: [
+          { url: BOOTH_SELECTOR_URL, label: "🎯 Find Your Ideal Booth (Selector Tool)" },
           { url: CONTACT_PAGE_URL, label: "Explore Solutions (Contact Us)" },
           { url: "https://radiantexhibits.com/services/", label: "View All Services" }
         ],
         chips: [
+          { label: "🎯 Booth Selector Tool", query: "Help me choose the right booth for my show", intent: "booth_selector" },
           { label: "🏢 Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" },
           { label: "🎨 Custom Exhibits", query: "Tell me about custom trade show booths", intent: "custom_solutions" },
-          { label: "🧩 Modular Displays", query: "What are your modular display options?", intent: "modular_displays" },
           { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?", intent: "pricing_quotes" }
         ]
       },
@@ -201,14 +218,15 @@
       dim_general: {
         answer: "• <strong>10x10 ft (100 sq ft):</strong> Standard inline footprint with an 8ft backwall height limit.\n• <strong>10x20 ft (200 sq ft):</strong> Double-wide linear space for combined product demos & meeting lounges.\n• <strong>20x20+ ft (400+ sq ft):</strong> Open 4-side island exhibit with 16–20ft height and hanging banners.\n• <strong>Custom Footprints:</strong> We engineer 20x30, 30x30, and custom pavilions to your exact floorplan!\n• <strong>Full Compliance:</strong> We design every booth to meet venue safety, electrical, and union rules.",
         links: [
+          { url: BOOTH_SELECTOR_URL, label: "🎯 Try Interactive Booth Selector" },
           { url: CONTACT_PAGE_URL, label: "Request Sizing Quote" },
           { url: "#book-consultation", label: "Schedule Sizing Discovery" }
         ],
         chips: [
+          { label: "🎯 Booth Selector Tool", query: "Help me choose the right booth for my show", intent: "booth_selector" },
           { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?", intent: "dim_10x10" },
           { label: "10x20 Dimensions", query: "Tell me about 10x20 booth dimensions", intent: "dim_10x20" },
-          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions", intent: "dim_20x20" },
-          { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?", intent: "pricing_quotes" }
+          { label: "20x20 Island", query: "Tell me about 20x20 island booth dimensions", intent: "dim_20x20" }
         ]
       },
 
@@ -439,10 +457,10 @@
           { url: "tel:4164120500", label: "Call 416-412-0500 for Fast Estimate" }
         ],
         chips: [
+          { label: "🎯 Booth Selector Tool", query: "Help me choose the right booth for my show", intent: "booth_selector" },
           { label: "10x10 Dimensions", query: "What are 10x10 booth dimensions?", intent: "dim_10x10" },
           { label: "🏢 Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" },
-          { label: "🌟 Why Choose Radiant", query: "Why should I choose Radiant Exhibits?", intent: "why_choose_radiant" },
-          { label: "📅 Book Consultation", query: "How can I book a free booth consultation?", intent: "consultation_session" }
+          { label: "🌟 Why Choose Radiant", query: "Why should I choose Radiant Exhibits?", intent: "why_choose_radiant" }
         ]
       },
 
@@ -632,18 +650,18 @@
       "have", "need", "want", "look", "make", "view", "tell", "book", "show", "open",
       "give", "send", "full", "free", "best", "days", "week", "year", "info", "team",
       "tips", "step", "steps", "process", "workflow", "design", "build", "order", "setup",
-      "your", "they", "them", "some", "many", "good", "fast", "lead", "time"
+      "your", "they", "them", "some", "many", "good", "fast", "lead", "time", "use"
     ]);
 
     // Trade show domain keywords for typo correction
     const ALL_CANONICAL_KEYWORDS = [
-      "price", "pricing", "cost", "costs", "quote", "quotes", "quotation", "budget", "estimate", "rates",
+      "radiant", "price", "pricing", "cost", "costs", "quote", "quotes", "quotation", "budget", "estimate", "rates",
       "dimension", "dimensions", "height", "tall", "hanging", "rigging", "ceiling", "footprint", "measurements", "tabletop", "island",
       "custom", "customized", "bespoke", "modular", "rental", "rentals", "portable", "lightbox", "accessories", "flooring", "furniture",
       "installation", "install", "dismantle", "teardown", "assembly", "logistics", "freight", "shipping", "storage", "concierge", "services",
       "rendering", "render", "drawings", "graphics", "fabric", "banner", "display", "displays", "exhibit", "exhibits", "booth", "booths",
       "showroom", "location", "address", "toronto", "scarborough", "contact", "phone", "telephone", "email", "hours",
-      "consultation", "consult", "schedule", "appointment", "calendar", "calendly", "meeting",
+      "consultation", "consult", "schedule", "appointment", "calendar", "calendly", "meeting", "selector",
       "hello", "thanks", "thank", "portfolio", "gallery", "timeline", "turnaround", "urgent", "venues", "lighting", "carpet", "printing"
     ];
 
@@ -695,25 +713,28 @@
       // Helper to test regex across both raw and normalized queries
       const matches = (regex) => regex.test(clean) || regex.test(raw);
 
-      // 1. WHAT IS RADIANT / ABOUT RADIANT (Direct company check)
+      // 1. BOOTH SELECTOR & SELECTION ADVICE
+      if (matches(/\b(?:selector|booth\s*selector|which\s*booth|choose\s*a?\s*booth|help\s*me\s*choose|recommend\s*a?\s*booth|find\s*(?:the\s*right|my)\s*booth|select\s*a?\s*booth|what\s*booth\s*(?:should|do)\s*i\s*(?:choose|need|get)|which\s*exhibit)\b/)) return 'booth_selector';
+
+      // 2. WHY USE / CHOOSE RADIANT (Why should I use Radiant, why Radiant)
+      if (matches(/\b(?:why\s*(?:should\s*i\s*)?(?:use|choose|hire|work\s*with)\s*radiant|why\s*(?:use|choose|hire|work\s*with)\s*radiant|why\s*radiant(?:\s*exhibits?)?|why\s*(?:should\s*i\s*)?(?:use|choose)\s*you|what\s*makes\s*you\s*(?:different|better|unique)|advantages?|benefits?|competitive\s*edge)\b/)) return 'why_choose_radiant';
+
+      // 3. WHAT IS RADIANT / ABOUT RADIANT (Direct company check)
       if (matches(/\b(?:what\s*is\s*radiant|who\s*(?:is\s*radiant|are\s*you)|about\s*(?:us|radiant|company|the\s*company)|radiant\s*exhibits?\b|company\s*(?:profile|background|history)|tell\s*me\s*about\s*radiant)\b/)) return 'about_radiant';
 
-      // 2. WHY CHOOSE RADIANT
-      if (matches(/\b(?:why\s*(?:choose\s*)?radiant|why\s*(?:choose\s*)?you|why\s*hire\s*radiant|what\s*makes\s*you\s*different|advantages?|benefits?|competitive\s*edge)\b/)) return 'why_choose_radiant';
-
-      // 3. WORKFLOW & PROCESS
+      // 4. WORKFLOW & PROCESS
       if (matches(/\b(?:how\s*(?:does\s*it|do\s*you)\s*work|workflow|order\s*process|how\s*to\s*start|project\s*steps|the\s*process|process|steps)\b/)) return 'process_workflow';
 
-      // 4. WHAT WE DO & CAPABILITIES
+      // 5. WHAT WE DO & CAPABILITIES
       if (matches(/\b(?:what\s*(?:do|can)\s*you\s*(?:do|offer|build|make)|capabilities|core\s*services?|what\s*are\s*your\s*services?)\b/)) return 'what_we_do';
 
-      // 5. COMMERCIAL, PRICING & QUOTES (Always prioritize pricing when user asks about cost/quote)
+      // 6. COMMERCIAL, PRICING & QUOTES (Always prioritize pricing when user asks about cost/quote)
       if (matches(/\b(?:price|pricing|costs?|how\s*much|budget|quotes?|quotation|rates?|estimate|get\s*a?\s*quote|request\s*a?\s*quote|fees?)\b/)) return 'pricing_quotes';
 
-      // 6. CONSULTATION & SCHEDULING
+      // 7. CONSULTATION & SCHEDULING
       if (matches(/\b(?:book|consult|consultation|schedule|appointment|meeting|strategy\s*call|calendly|calendar)\b/)) return 'consultation_session';
 
-      // 7. SPECIFIC BOOTH DIMENSIONS & SIZES
+      // 8. SPECIFIC BOOTH DIMENSIONS & SIZES
       if (matches(/\b10\s*(?:x|by|\*)\s*10\b|100\s*sq|10\s*ft\s*booth\b/)) return 'dim_10x10';
       if (matches(/\b10\s*(?:x|by|\*)\s*20\b|200\s*sq|20\s*ft\s*booth\b/)) return 'dim_10x20';
       if (matches(/\b20\s*(?:x|by|\*)\s*20\b|400\s*sq|\bisland\b/)) return 'dim_20x20';
@@ -776,6 +797,7 @@
       if (tokenSet.has("showroom") || tokenSet.has("address")) return 'location_hours';
       if (tokenSet.has("contact") || tokenSet.has("phone") || tokenSet.has("email")) return 'contact_info';
       if (tokenSet.has("exhibit") || tokenSet.has("booth") || tokenSet.has("displays") || tokenSet.has("services")) return 'services_overview';
+      if (tokenSet.has("selector")) return 'booth_selector';
 
       return null;
     }
@@ -826,16 +848,17 @@
           renderBotMessage(data.answer, data.links || [], data.chips || []);
         } else {
           // Accurate, structured fallback with suggestions and direct contacts
-          const fallbackText = "• I don't have the exact details on that specific question yet.\n• Our Toronto trade show specialists can answer your question immediately!\n• Call us directly at <strong>416-412-0500</strong> or email <strong>sales@radiantexhibits.com</strong>.\n• You can also visit our Contact Us page to request a custom quote:";
+          const fallbackText = "• I don't have the exact details on that specific question yet.\n• Our Toronto trade show specialists can answer your question immediately!\n• Call us directly at <strong>416-412-0500</strong> or email <strong>sales@radiantexhibits.com</strong>.\n• You can also use our interactive Booth Selector or visit our Contact Us page:";
           
           renderBotMessage(fallbackText, [
+            { url: BOOTH_SELECTOR_URL, label: "🎯 Find Your Ideal Booth (Selector Tool)" },
             { url: CONTACT_PAGE_URL, label: "Get a Quote (Contact Us)" },
             { url: "tel:4164120500", label: "Call 416-412-0500" }
           ], [
+            { label: "🎯 Booth Selector Tool", query: "Help me choose the right booth for my show", intent: "booth_selector" },
             { label: "🏢 What Is Radiant?", query: "What is Radiant Exhibits?", intent: "about_radiant" },
             { label: "💰 Pricing & Quotes", query: "How much does a trade show booth cost?", intent: "pricing_quotes" },
-            { label: "📐 Booth Dimensions", query: "What booth dimensions and sizes do you offer?", intent: "dim_general" },
-            { label: "🏢 Turnkey Rentals", query: "Tell me about trade show booth rentals", intent: "rental_booths" }
+            { label: "📐 Booth Dimensions", query: "What booth dimensions and sizes do you offer?", intent: "dim_general" }
           ]);
         }
       }, 450);

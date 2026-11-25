@@ -502,51 +502,155 @@
       }
     });
 
-    // Comprehensive NLP & Intent Matching Algorithm
+    // Damerau-Levenshtein Typo & Fuzzy Matching Algorithm
+    function editDistance(a, b) {
+      if (a === b) return 0;
+      const al = a.length, bl = b.length;
+      if (!al) return bl;
+      if (!bl) return al;
+
+      const dp = Array.from({ length: al + 1 }, () => new Array(bl + 1).fill(0));
+      for (let i = 0; i <= al; i++) dp[i][0] = i;
+      for (let j = 0; j <= bl; j++) dp[0][j] = j;
+
+      for (let i = 1; i <= al; i++) {
+        for (let j = 1; j <= bl; j++) {
+          const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+          dp[i][j] = Math.min(
+            dp[i - 1][j] + 1,       // deletion
+            dp[i][j - 1] + 1,       // insertion
+            dp[i - 1][j - 1] + cost // substitution
+          );
+          if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+            dp[i][j] = Math.min(dp[i][j], dp[i - 2][j - 2] + 1); // transposition
+          }
+        }
+      }
+      return dp[al][bl];
+    }
+
+    // Common short English words to protect against false positive typo replacements
+    const COMMON_PRESERVED_WORDS = new Set([
+      "call", "talk", "chat", "help", "more", "what", "when", "where", "with", "from",
+      "have", "need", "want", "look", "make", "view", "tell", "book", "show", "open",
+      "give", "send", "full", "free", "best", "days", "week", "year", "info", "team"
+    ]);
+
+    // Trade show domain keywords for typo correction
+    const ALL_CANONICAL_KEYWORDS = [
+      "price", "pricing", "cost", "costs", "quote", "quotes", "quotation", "budget", "estimate", "rates",
+      "dimension", "dimensions", "height", "tall", "hanging", "rigging", "ceiling", "footprint", "measurements", "tabletop", "island",
+      "custom", "customized", "bespoke", "modular", "rental", "rentals", "portable", "lightbox", "accessories", "flooring", "furniture",
+      "installation", "install", "dismantle", "teardown", "assembly", "logistics", "freight", "shipping", "storage", "concierge", "services",
+      "rendering", "render", "drawings", "graphics", "fabric", "banner", "display", "displays", "exhibit", "exhibits", "booth", "booths",
+      "showroom", "location", "address", "toronto", "scarborough", "contact", "phone", "telephone", "email", "hours",
+      "consultation", "consult", "schedule", "appointment", "calendar", "calendly", "meeting",
+      "hello", "thanks", "thank", "portfolio", "gallery", "timeline", "turnaround", "urgent", "venues"
+    ];
+
+    function findBestCorrection(token) {
+      if (!token || token.length < 3) return token;
+      if (COMMON_PRESERVED_WORDS.has(token)) return token;
+
+      let bestMatch = token;
+      let minDistance = 999;
+
+      for (const canonical of ALL_CANONICAL_KEYWORDS) {
+        if (token === canonical) return canonical;
+
+        if (canonical.length >= 6 && token.length >= 5) {
+          if (canonical.startsWith(token) || token.startsWith(canonical)) {
+            return canonical;
+          }
+        }
+
+        const len = Math.max(token.length, canonical.length);
+        const maxEdits = len <= 4 ? 1 : (len <= 7 ? 2 : 3);
+        const dist = editDistance(token, canonical);
+
+        if (dist <= maxEdits && dist < minDistance) {
+          minDistance = dist;
+          bestMatch = canonical;
+        }
+      }
+
+      return bestMatch;
+    }
+
+    function normalizeQuery(userText) {
+      let clean = userText.toLowerCase().trim();
+      clean = clean.replace(/\b10\s*(?:x|by|\*)\s*10(?:ft|sq|'|’)?\b/g, "10x10");
+      clean = clean.replace(/\b10\s*(?:x|by|\*)\s*20(?:ft|sq|'|’)?\b/g, "10x20");
+      clean = clean.replace(/\b20\s*(?:x|by|\*)\s*20(?:ft|sq|'|’)?\b/g, "20x20");
+
+      const tokens = clean.split(/[^a-z0-9*]+/);
+      const correctedTokens = tokens.map(token => findBestCorrection(token));
+      return correctedTokens.join(" ");
+    }
+
+    // Comprehensive NLP & Intent Matching Algorithm (with Typo Tolerance & Fuzzy Matching)
     function findBestMatch(userText) {
-      const clean = userText.toLowerCase().trim();
+      const raw = userText.toLowerCase().trim();
+      const clean = normalizeQuery(userText); // Typo-corrected normalized text
+
+      // Helper to test regex across both raw and normalized queries
+      const matches = (regex) => regex.test(clean) || regex.test(raw);
 
       // 1. COMMERCIAL, PRICING & QUOTES (Always prioritize pricing when user asks about cost/quote)
-      if (/\b(?:price|pricing|costs?|how\s*much|budget|quotes?|quotation|rates?|estimate|get\s*a?\s*quote|request\s*a?\s*quote)\b/.test(clean)) return 'pricing_quotes';
+      if (matches(/\b(?:price|pricing|costs?|how\s*much|budget|quotes?|quotation|rates?|estimate|get\s*a?\s*quote|request\s*a?\s*quote)\b/)) return 'pricing_quotes';
 
       // 2. CONSULTATION & SCHEDULING
-      if (/\b(?:book|consultation|schedule|appointment|meeting|strategy\s*call|calendly)\b/.test(clean)) return 'consultation_session';
+      if (matches(/\b(?:book|consult|consultation|schedule|appointment|meeting|strategy\s*call|calendly|calendar)\b/)) return 'consultation_session';
 
       // 3. SPECIFIC BOOTH DIMENSIONS & SIZES
-      if (/\b10\s*(?:x|by|\*)\s*10\b|100\s*sq|10\s*ft\s*booth\b/.test(clean)) return 'dim_10x10';
-      if (/\b10\s*(?:x|by|\*)\s*20\b|200\s*sq|20\s*ft\s*booth\b/.test(clean)) return 'dim_10x20';
-      if (/\b20\s*(?:x|by|\*)\s*20\b|400\s*sq|\bisland\b/.test(clean)) return 'dim_20x20';
-      if (/\b(?:table\s*top|tabletop|6ft|8ft\s*table|pull\s*up|banner\s*stand|retractable)\b/.test(clean)) return 'dim_tabletop';
-      if (/\b(?:height|how\s*tall|hanging\s*sign|rigging|ceiling|perimeter)\b/.test(clean)) return 'dim_height';
-      if (/\b(?:dimension|dimensions|sizes?|footprint|footprints|measurements?|how\s*big)\b/.test(clean)) return 'dim_general';
+      if (matches(/\b10\s*(?:x|by|\*)\s*10\b|100\s*sq|10\s*ft\s*booth\b/)) return 'dim_10x10';
+      if (matches(/\b10\s*(?:x|by|\*)\s*20\b|200\s*sq|20\s*ft\s*booth\b/)) return 'dim_10x20';
+      if (matches(/\b20\s*(?:x|by|\*)\s*20\b|400\s*sq|\bisland\b/)) return 'dim_20x20';
+      if (matches(/\b(?:table\s*top|tabletop|6ft|8ft\s*table|pull\s*up|banner\s*stand|retractable)\b/)) return 'dim_tabletop';
+      if (matches(/\b(?:height|how\s*tall|tall|hanging\s*sign|rigging|ceiling|perimeter)\b/)) return 'dim_height';
+      if (matches(/\b(?:dimension|dimensions|sizes?|footprint|footprints|measurements?|how\s*big)\b/)) return 'dim_general';
 
       // 4. CONVERSATIONAL & ABOUT INTENTS
-      if (/^(?:hi|hello|hey|good\s*morning|good\s*afternoon|good\s*evening|greetings)\b/.test(clean)) return 'greetings';
-      if (/\b(?:thank|thanks|appreciate|awesome|perfect|great\s*job)\b/.test(clean)) return 'thanks';
-      if (/\b(?:who\s*(?:are\s*you|is\s*radiant)|about\s*(?:us|radiant|company)|experience|history|background)\b/.test(clean)) return 'about_radiant';
+      if (matches(/^(?:hi|hello|hey|good\s*morning|good\s*afternoon|good\s*evening|greetings)\b/)) return 'greetings';
+      if (matches(/\b(?:thank|thanks|appreciate|awesome|perfect|great\s*job)\b/)) return 'thanks';
+      if (matches(/\b(?:who\s*(?:are\s*you|is\s*radiant)|about\s*(?:us|radiant|company)|experience|history|background)\b/)) return 'about_radiant';
 
       // 5. LOCATION, HOURS & CONTACT DIRECT
-      if (/\b(?:location|address|where|showroom|visit|facility|milner|hours|open|when\s*open|toronto|scarborough)\b/.test(clean)) return 'location_hours';
-      if (/\b(?:contact|phone|telephone|call|number|email|sales|reach|speak|talk)\b/.test(clean)) return 'contact_info';
+      if (matches(/\b(?:location|address|where|showroom|visit|facility|milner|hours|open|when\s*open|toronto|scarborough)\b/)) return 'location_hours';
+      if (matches(/\b(?:contact|phone|telephone|call|number|email|sales|reach|speak|talk)\b/)) return 'contact_info';
 
       // 6. PRODUCT CATEGORIES (Based on site links)
-      if (/\b(?:rent|rental|rentals|renting|lease|hire)\b/.test(clean)) return 'rental_booths';
-      if (/\b(?:custom|customized|bespoke|fabrication|fabricate|wood|metal|graphic-oriented|product-oriented)\b/.test(clean)) return 'custom_solutions';
-      if (/\b(?:modular|hybrid|truss|vector|reconfigurable|extrusions?)\b/.test(clean)) return 'modular_displays';
-      if (/\b(?:portable|pop\s*up|popup|tension\s*fabric|stretch\s*fabric|lightweight)\b/.test(clean)) return 'portable_displays';
-      if (/\b(?:accessories|lighting|light\s*box|lightbox|flooring|carpet|furniture|counters?|kiosks?|screens?|tv|monitors?|holograms?)\b/.test(clean)) return 'accessories_equipment';
+      if (matches(/\b(?:rent|rental|rentals|renting|lease|hire)\b/)) return 'rental_booths';
+      if (matches(/\b(?:custom|customized|bespoke|fabrication|fabricate|wood|metal|graphic-oriented|product-oriented)\b/)) return 'custom_solutions';
+      if (matches(/\b(?:modular|hybrid|truss|vector|reconfigurable|extrusions?)\b/)) return 'modular_displays';
+      if (matches(/\b(?:portable|pop\s*up|popup|tension\s*fabric|stretch\s*fabric|lightweight)\b/)) return 'portable_displays';
+      if (matches(/\b(?:accessories|lighting|light\s*box|lightbox|flooring|carpet|furniture|counters?|kiosks?|screens?|tv|monitors?|holograms?)\b/)) return 'accessories_equipment';
 
       // 7. SERVICES CATEGORIES (Based on /services/)
-      if (/\b(?:install|installation|dismantle|teardown|assembly|assemble|labor|i&d|union)\b/.test(clean)) return 'service_installation';
-      if (/\b(?:3d|render|rendering|renderings|cad|mockup|mockups|layout|drawings?)\b/.test(clean)) return 'service_3d_design';
-      if (/\b(?:concierge|white\s*glove|hotel|shuttle|catering|hospitality|booth\s*staff)\b/.test(clean)) return 'service_concierge';
-      if (/\b(?:logistics|freight|shipping|storage|warehouse|store|crates?|crating)\b/.test(clean)) return 'service_logistics_storage';
-      if (/\b(?:services?|what\s*do\s*you\s*do|solutions?)\b/.test(clean)) return 'services_overview';
+      if (matches(/\b(?:install|installation|dismantle|teardown|assembly|assemble|labor|i&d|union)\b/)) return 'service_installation';
+      if (matches(/\b(?:3d|render|rendering|renderings|cad|mockup|mockups|layout|drawings?)\b/)) return 'service_3d_design';
+      if (matches(/\b(?:concierge|white\s*glove|hotel|shuttle|catering|hospitality|booth\s*staff)\b/)) return 'service_concierge';
+      if (matches(/\b(?:logistics|freight|shipping|storage|warehouse|store|crates?|crating)\b/)) return 'service_logistics_storage';
+      if (matches(/\b(?:services?|what\s*do\s*you\s*do|solutions?)\b/)) return 'services_overview';
 
       // 8. OTHER INQUIRIES (Portfolio, Timeline, Venues)
-      if (/\b(?:portfolio|gallery|photos?|pictures?|past\s*work|previous|clients?|examples?)\b/.test(clean)) return 'portfolio_gallery';
-      if (/\b(?:timeline|turnaround|how\s*long|lead\s*time|rush|urgent|deadline|weeks?)\b/.test(clean)) return 'timeline_turnaround';
-      if (/\b(?:venues?|cities|city|locations?|convention|centre|center|mtcc|enercare|vegas|las\s*vegas|chicago|orlando|montreal|vancouver)\b/.test(clean)) return 'venues_locations';
+      if (matches(/\b(?:portfolio|gallery|photos?|pictures?|past\s*work|previous|clients?|examples?)\b/)) return 'portfolio_gallery';
+      if (matches(/\b(?:timeline|turnaround|how\s*long|lead\s*time|rush|urgent|deadline|weeks?)\b/)) return 'timeline_turnaround';
+      if (matches(/\b(?:venues?|cities|city|locations?|convention|centre|center|mtcc|enercare|vegas|las\s*vegas|chicago|orlando|montreal|vancouver)\b/)) return 'venues_locations';
+
+      // 9. SECONDARY TOKEN-BASED FALLBACK (Catches single-word queries or typos)
+      const tokenSet = new Set(clean.split(" "));
+      if (tokenSet.has("price") || tokenSet.has("pricing") || tokenSet.has("quote") || tokenSet.has("cost") || tokenSet.has("budget")) return 'pricing_quotes';
+      if (tokenSet.has("modular")) return 'modular_displays';
+      if (tokenSet.has("rental") || tokenSet.has("rentals")) return 'rental_booths';
+      if (tokenSet.has("custom")) return 'custom_solutions';
+      if (tokenSet.has("portable")) return 'portable_displays';
+      if (tokenSet.has("installation") || tokenSet.has("dismantle")) return 'service_installation';
+      if (tokenSet.has("dimension") || tokenSet.has("dimensions")) return 'dim_general';
+      if (tokenSet.has("consultation") || tokenSet.has("calendar") || tokenSet.has("schedule")) return 'consultation_session';
+      if (tokenSet.has("showroom") || tokenSet.has("address")) return 'location_hours';
+      if (tokenSet.has("contact") || tokenSet.has("phone") || tokenSet.has("email")) return 'contact_info';
+      if (tokenSet.has("exhibit") || tokenSet.has("booth") || tokenSet.has("displays") || tokenSet.has("services")) return 'services_overview';
 
       return null;
     }

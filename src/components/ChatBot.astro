@@ -1,3 +1,7 @@
+---
+const apiKey = import.meta.env.PUBLIC_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY || "";
+---
+
 <div class="chatbot-wrapper">
 
   <button id="chat-bubble" class="chat-bubble" aria-label="Open Chat">
@@ -56,7 +60,7 @@
   </div>
 </div>
 
-<script is:inline>
+<script is:inline define:vars={{ apiKey }}>
   function setupChatUI() {
     const bubble = document.getElementById("chat-bubble");
     const windowEl = document.getElementById("chat-window");
@@ -99,24 +103,77 @@
       renderMessage(text, "user");
       input.value = "";
 
+      if (!apiKey) {
+        renderMessage("I'm having trouble connecting (API key missing). Please contact us at Sales@radiantexhibits.com or call 416-412-0500.", "bot", false);
+        return;
+      }
+
       try {
-        const res = await fetch("/api/chat", {
+        const systemInstruction = `
+            You are the "Radiant Assistant," an expert for Radiant Exhibits, Canada's #1 custom trade show booth provider.
+            
+            COMPANY OVERVIEW:
+            - Location: Toronto, Canada (Office: 150 Milner Ave Unit #19, Toronto, ON).
+            - Tagline: #1 Custom Trade Show Booth Exhibits in Canada.
+            - Expertise: End-to-end service including design, installation, and concierge support.
+
+            PRODUCT LIST & RECOMMENDATIONS:
+            1. CUSTOM EXHIBITS: For brands wanting a unique, 100% unique presence. Best for large spaces. [LINK: https://radiantexhibits.com/gallery | View Our Portfolio]
+            2. MODULAR DISPLAYS (Hybrid, Truss, Vector): Flexible layout changes.
+            3. PORTABLE DISPLAYS (Pop-ups, Tension Fabric, Banner Stands): Best for small spaces (8ft/10ft). Most popular is 'Tension Fabric Display'.
+            4. RENTAL SOLUTIONS: Best for companies on a budget. [LINK: https://radiantexhibits.com/category/rental | View Rental Solutions]
+
+            RECOMMENDATION LOGIC:
+            - If user needs speed/easy setup -> Recommend 'Portable Pop-up Displays'.
+            - If user wants a high-end, glowing look -> Recommend 'LED Backlit Lightboxes'.
+            - If user is on a budget -> Recommend 'Rental Booths'.
+
+            REDIRECTION BUTTON RULES:
+            - When users ask about your portfolio, past works, or examples, strictly include: [LINK: https://radiantexhibits.com/gallery | View Portfolio]
+            - When users ask about services or solutions, strictly include: [LINK: https://radiantexhibits.com/ | View Solutions]
+            - When users ask about rental details, strictly include: [LINK: https://radiantexhibits.com/category/rental | View Rental Services]
+            - When users want to find out more details about who you are, use: [LINK: https://radiantexhibits.com/about-us | About Us]
+            Format link references EXACTLY like this layout: [LINK: url | Button Label Text]. Do not write standard markdown links.
+
+            STRICT SCOPE & FALLBACK:
+            - ONLY answer questions related to Radiant Exhibits, trade shows, or booth design.
+            - If a user asks about unrelated topics, say: "That is outside my scope! Please ask me anything related to Radiant Exhibits."
+
+            also never use ** in the response u give
+        `;
+
+        const contents = [
+          ...chatHistory.map((msg) => ({
+            role: msg.role === 'user' ? 'user' : 'model',
+            parts: [{ text: msg.text }]
+          })),
+          {
+            role: 'user',
+            parts: [{ text: text }]
+          }
+        ];
+
+        const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            message: text,
-            history: chatHistory
+            system_instruction: {
+              parts: [{ text: systemInstruction }]
+            },
+            contents: contents
           }),
         });
 
         const data = await res.json();
+        const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "I'm having trouble connecting. Please contact us at Sales@radiantexhibits.com or call 416-412-0500.";
 
         // Standardizing history payload key format names
         chatHistory.push({ role: "user", text: text });
-        chatHistory.push({ role: "model", text: data.reply });
+        chatHistory.push({ role: "model", text: reply });
 
-        renderMessage(data.reply, "bot", true);
+        renderMessage(reply, "bot", true);
       } catch (err) {
+        console.error("DEBUG - Gemini Error:", err);
         renderMessage("Sorry, I'm having trouble connecting right now.", "bot", false);
       }
     }
